@@ -1,0 +1,9 @@
+repo: git@github.com:aishwar/mysite.git
+app:
+  name: mysite
+  path: ~/apps/mysite
+deployment:
+  olddir: $('realpath ~/apps/mysite')
+  newdir: $('~/deployments/mysite/$(uuidgen)')
+  history: ~/deployments/mysite/history
+  keep_history: 5
