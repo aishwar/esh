@@ -59,6 +59,10 @@
 
     <expression>
     <not><expression>
+    <comparison>
+    
+#### Comparison
+
     <expression> <operator> <expression>
 
 ### Expression

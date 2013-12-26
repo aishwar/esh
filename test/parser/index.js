@@ -10,10 +10,21 @@ describe('Parser', function () {
         var input = detail[0],
             description = detail[2],
             output,
-            expected = {
-              type: nodeType,
-              value: detail[1]
-            };
+            expected;
+        
+        // When a simple type is passed as the expected value, the node is expected to contain
+        // a property called "value" with the expected value
+        if (typeof detail[1] != "object") {
+          expected = {
+            type: nodeType,
+            value: detail[1]
+          }
+        } else {
+          // When an object is passed as the expected value, it is assumed this is the whole
+          // object, except the "type" may not be filled as it repeats.
+          expected = detail[1];
+          expected.type = nodeType;
+        }
         
         try {
           output = parser.parse(input)
@@ -24,7 +35,7 @@ describe('Parser', function () {
         }
         
         if (description) {
-          description += '.\n\tExpected: ' + JSON.stringify(expected) + '. Received: ' + JSON.stringify(output);
+          description += '.\n\tExpected: ' + JSON.stringify(expected) + '.\n\tReceived: ' + JSON.stringify(output);
         }
         // Do the deep equal, because I like to see the diff between the nodes
         assert.deepEqual(output, expected, description);
@@ -102,4 +113,56 @@ describe('Parser', function () {
     ]);
   });
   
+  it ('should parse comparisons', function () {
+    function atom(type, val) {
+      return {
+        type: type,
+        value: val
+      }
+    }
+    
+    test('comparison', [
+      [ '$a > 1', {
+          operator: atom('operator', '>'),
+          left: atom('variable', 'a'),
+          right: atom('literal:number', 1)
+        },
+        '<variable> <operator> <number> : greater than' ],
+        
+      [ '$a != 1', {
+          operator: atom('operator', '!='),
+          left: atom('variable', 'a'),
+          right: atom('literal:number', 1)
+        },
+        '<variable> <operator> <number> : not equal to' ],
+      
+      [ '1\t==\t\t1', {
+          operator: atom('operator', '=='),
+          left: atom('literal:number', 1),
+          right: atom('literal:number', 1)
+        },
+        '<number> <whitespace> <operator> <whitespace> <number> : equal to' ],
+        
+      [ '$command.err != ""', {
+          operator: atom('operator', '!='),
+          left: atom('variable', 'command.err'),
+          right: atom('literal:string', "")
+        },
+        '<nested.variable> <operator> <string> : not equal to' ],
+        
+      [ '\t\t"done" == $command.out', {
+          operator: atom('operator', '=='),
+          left: atom('literal:string', 'done'),
+          right: atom('variable', 'command.out')
+        },
+        '[start-of-line-whitespace] <string> <operator> <nested.variable> : equal to' ],
+        
+      [ '\t\t"done" == $command.out\t\t\t\n', {
+          operator: atom('operator', '=='),
+          left: atom('literal:string', 'done'),
+          right: atom('variable', 'command.out')
+        },
+        '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ]
+    ]);;
+  });
 });
