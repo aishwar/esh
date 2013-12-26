@@ -8,12 +8,21 @@ describe('Parser', function () {
     //   [ input, output, test-description ]
     testCases.forEach(function (detail) {
         var input = detail[0],
-            expectedValue = detail[1],
-            description = detail[2];
-        assert.deepEqual(parser.parse(input), {
-          type: nodeType,
-          value: expectedValue
-        });
+            description = detail[2],
+            output = parser.parse(input),
+            expected = {
+              type: nodeType,
+              value: detail[1]
+            };
+        if (description) {
+          description += '.\n\tExpected: ' + JSON.stringify(expected) + '. Received: ' + JSON.stringify(output);
+        }
+        // Do the deep equal, because I like to see the diff between the nodes
+        assert.deepEqual(output, expected, description);
+        // Ensure types are what we expect as well
+        if (expected.value !== output.value) {
+          throw new Error('Type error in value. Expected: ' + JSON.stringify(expected) + ', Received: ' + JSON.stringify(output));
+        }
     });
   }
 
@@ -28,6 +37,12 @@ describe('Parser', function () {
     ]);
   });
   
+  it ('should parse numbers', function () {
+    test('literal:number', [
+      [ '1', 1, 'Integer number parsing'],
+      [ '035', 35, 'Number should not be parsed as octal by leading 0']
+    ]);
+  });
   
   it ('should parse comments', function () {
     test('comment', [
