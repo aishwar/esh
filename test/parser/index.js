@@ -16,12 +16,17 @@ describe('Parser', function () {
     
     tests.forEach(function (test) {
       try {
-        assert.deepEqual(parser.parse(test[0]), test[1]);
+        assert.deepEqual(parser.parse(test[0]), {
+          type: 'quoted-string',
+          value: test[1]
+        });
       } catch (e) {
         console.error(e);
         assert.fail(test[2]);
       }
     });
   });
+  
+  
   
 });
