@@ -46,7 +46,7 @@
 
 #### Switch
 
-    switch (<condition>) {
+    switch (<variable>) {
       case <value1>:
         <case1-body>
         break

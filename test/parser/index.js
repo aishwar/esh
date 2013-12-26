@@ -84,17 +84,6 @@ describe('Parser', function () {
     ]);
   });
   
-  it ('should parse operators', function () {
-    test('operator', [
-      [ '==', '==', 'Equal to' ],
-      [ '!=', '!=', 'Not Equal to' ],
-      [ '>' , '>' , 'Greater than' ],
-      [ '>=', '>=', 'Greater than or equal to' ],
-      [ '<' , '<' , 'Less than' ],
-      [ '<=', '<=', 'Less than or equal to' ]
-    ]);
-  });
-  
   it ('should parse variables', function () {
     test('variable', [
       [ '$var', 'var', 'Name with only letters'],
@@ -113,56 +102,136 @@ describe('Parser', function () {
     ]);
   });
   
-  it ('should parse comparisons', function () {
-    function atom(type, val) {
-      return {
-        type: type,
-        value: val
-      }
+  function atom(type, val) {
+    return {
+      type: type,
+      value: val
     }
+  }
+  
+  it ('should parse if-statements', function () {
     
-    test('comparison', [
-      [ '$a > 1', {
-          operator: atom('operator', '>'),
-          left: atom('variable', 'a'),
-          right: atom('literal:number', 1)
-        },
-        '<variable> <operator> <number> : greater than' ],
-        
-      [ '$a != 1', {
-          operator: atom('operator', '!='),
-          left: atom('variable', 'a'),
-          right: atom('literal:number', 1)
-        },
-        '<variable> <operator> <number> : not equal to' ],
+    test('if', [
+      [ 'if ($a) {} ', {
+        condition: atom('variable', 'a')
+      },
+      'Variable used as a condition' ],
       
-      [ '1\t==\t\t1', {
-          operator: atom('operator', '=='),
-          left: atom('literal:number', 1),
-          right: atom('literal:number', 1)
+      [ 'if (!$a) {} ', {
+        condition: atom('not', atom('variable', 'a'))
+      },
+      'Variable used as a condition' ],
+      
+      [ ' if  ( $a )  { \n\t }  ', {
+        condition: atom('variable', 'a')
+      },
+      'whitespace before/after if; before/after condition; multiple whitespaces' ],
+      
+      [ ' if ( $a  >=  5 ) {}', {
+        condition: {
+          type: 'comparison',
+          left: atom('variable', 'a'),
+          right: atom('literal:number', 5),
+          operator: atom('operator', '>=')
         },
-        '<number> <whitespace> <operator> <whitespace> <number> : equal to' ],
-        
-      [ '$command.err != ""', {
-          operator: atom('operator', '!='),
-          left: atom('variable', 'command.err'),
-          right: atom('literal:string', "")
-        },
-        '<nested.variable> <operator> <string> : not equal to' ],
-        
-      [ '\t\t"done" == $command.out', {
-          operator: atom('operator', '=='),
-          left: atom('literal:string', 'done'),
-          right: atom('variable', 'command.out')
-        },
-        '[start-of-line-whitespace] <string> <operator> <nested.variable> : equal to' ],
-        
-      [ '\t\t"done" == $command.out\t\t\t\n', {
-          operator: atom('operator', '=='),
-          left: atom('literal:string', 'done'),
-          right: atom('variable', 'command.out')
-        },
-        '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ]
-    ]);;
+      }, 'Comparison used as a condition' ],
+      
+    ]);
+    
+  
+  
+    describe('comparisons in if statements', function () {
+      it ('should be parsed', function () {
+        test('if', [
+          [ 'if ($a > 1) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '>'),
+                left: atom('variable', 'a'),
+                right: atom('literal:number', 1)
+              }
+            },
+            '<variable> <operator> <number> : greater than' ],
+          
+          [ 'if ($a < 1) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '<'),
+                left: atom('variable', 'a'),
+                right: atom('literal:number', 1)
+              }
+            },
+            '<variable> <operator> <number> : greater than' ],
+          
+          [ 'if ($a >= 1) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '>='),
+                left: atom('variable', 'a'),
+                right: atom('literal:number', 1)
+              }
+            },
+            '<variable> <operator> <number> : greater than' ],
+            
+          [ 'if ($a <= 1) {}', 
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '<='),
+                left: atom('variable', 'a'),
+                right: atom('literal:number', 1)
+              }
+            },
+            '<variable> <operator> <number> : not equal to' ],
+          
+          [ 'if (1\t==\t\t1) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '=='),
+                left: atom('literal:number', 1),
+                right: atom('literal:number', 1)
+              }
+            },
+            '<number> <whitespace> <operator> <whitespace> <number> : equal to' ],
+            
+          [ 'if ($command.err != "") {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '!='),
+                left: atom('variable', 'command.err'),
+                right: atom('literal:string', "")
+              }
+            },
+            '<nested.variable> <operator> <string> : not equal to' ],
+            
+          [ 'if (\t\t"done" == $command.out) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '=='),
+                left: atom('literal:string', 'done'),
+                right: atom('variable', 'command.out')
+              }
+            },
+            '[start-of-line-whitespace] <string> <operator> <nested.variable> : equal to' ],
+            
+          [ 'if (\t\t"done" == $command.out\t\t\t\n) {}',
+            {
+              condition: {
+                type: 'comparison',
+                operator: atom('operator', '=='),
+                left: atom('literal:string', 'done'),
+                right: atom('variable', 'command.out')
+              }
+            },
+            '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ]
+        ]);
+      });
+    });
   });
 });
