@@ -18,7 +18,7 @@ describe('Parser', function () {
   }
 
   it ('should parse strings', function () {
-    test('quoted-string', [
+    test('literal:string', [
       [ "'hello'", "hello", 'Single quoted string' ],
       [ '"hello"', "hello", 'Double quoted string' ],
       [ '"\\"hello\\""', '"hello"', 'Single quoted string with escape sequence' ],
@@ -36,8 +36,14 @@ describe('Parser', function () {
   });
   
   it ('should parse log messages', function () {
-    test('log', [
+    test('log:out', [
       [ '## log', 'log', '']
+    ]);
+  });
+  
+  it ('should parse log-err messages', function () {
+    test('log:err', [
+      [ '#! error', 'error', '']
     ]);
   });
 });
