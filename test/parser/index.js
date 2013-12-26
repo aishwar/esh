@@ -9,11 +9,20 @@ describe('Parser', function () {
     testCases.forEach(function (detail) {
         var input = detail[0],
             description = detail[2],
-            output = parser.parse(input),
+            output,
             expected = {
               type: nodeType,
               value: detail[1]
             };
+        
+        try {
+          output = parser.parse(input)
+        } catch (e) {
+          if (e instanceof parser.SyntaxError) {
+            throw new Error('Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + e.message);
+          }
+        }
+        
         if (description) {
           description += '.\n\tExpected: ' + JSON.stringify(expected) + '. Received: ' + JSON.stringify(output);
         }
@@ -59,6 +68,17 @@ describe('Parser', function () {
   it ('should parse log-err messages', function () {
     test('log:err', [
       [ '#! error', 'error', '']
+    ]);
+  });
+  
+  it ('should parse operators', function () {
+    test('operator', [
+      [ '==', '==', 'Equal to' ],
+      [ '!=', '!=', 'Not Equal to' ],
+      [ '>' , '>' , 'Greater than' ],
+      [ '>=', '>=', 'Greater than or equal to' ],
+      [ '<' , '<' , 'Less than' ],
+      [ '<=', '<=', 'Less than or equal to' ]
     ]);
   });
 });
