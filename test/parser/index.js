@@ -34,4 +34,10 @@ describe('Parser', function () {
       [ '# comment', ' comment', '']
     ]);
   });
+  
+  it ('should parse log messages', function () {
+    test('log', [
+      [ '## log', 'log', '']
+    ]);
+  });
 });
