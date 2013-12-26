@@ -1,0 +1,35 @@
+{
+  "name": "esh",
+  "version": "0.0.1",
+  "description": "A nicer shell scripting language.",
+  "main": "index.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "mocha --recursive --watch --reporter list"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/aishwar/esh.git"
+  },
+  "keywords": [
+    "shell",
+    "script",
+    "alternative",
+    "easy",
+    "enhanced"
+  ],
+  "author": "Aishwar Muthuraman",
+  "license": "MIT",
+  "readmeFilename": "readme.md",
+  "bugs": {
+    "url": "https://github.com/aishwar/esh/issues"
+  },
+  "devDependencies": {
+    "mocha": "~1.16.2"
+  },
+  "dependencies": {
+    "pegjs": "~0.8.0"
+  }
+}
