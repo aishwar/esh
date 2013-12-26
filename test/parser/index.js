@@ -92,4 +92,14 @@ describe('Parser', function () {
     ]);
   });
   
+  it ('should parse whitespace', function () {
+    test('whitespace', [
+      [ ' ', ' ', 'Single Space'],
+      [ '   ', '   ', 'Multiple Spaces'],
+      [ '\n \n', '\n \n', 'Newline'],
+      [ '\r \r', '\r \r', 'Carriage Returns'],
+      [ ' \t \t ', ' \t \t ', 'Tabs']
+    ]);
+  });
+  
 });
