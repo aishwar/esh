@@ -37,8 +37,10 @@ describe('Parser', function () {
 
   it ('should parse strings', function () {
     test('literal:string', [
-      [ "'hello'", "hello", 'Single quoted string' ],
-      [ '"hello"', "hello", 'Double quoted string' ],
+      [ "''", '', 'Single quoted empty string' ],
+      [ '""', '', 'Double quoted empty string' ],
+      [ "'hello'", 'hello', 'Single quoted string' ],
+      [ '"hello"', 'hello', 'Double quoted string' ],
       [ '"\\"hello\\""', '"hello"', 'Single quoted string with escape sequence' ],
       [ "'\\'hello\\''", "'hello'", 'Double quoted string with escape sequence' ],
       [ '"' + "m'i'xed" + '"', "m'i'xed", 'Single quotes within double quoted string' ],
