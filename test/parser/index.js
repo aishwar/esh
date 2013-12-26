@@ -27,4 +27,11 @@ describe('Parser', function () {
       [ "'" + 'm"i"xed' + "'", 'm"i"xed', 'Double quotes within single quoted string' ]
     ]);
   });
+  
+  
+  it ('should parse comments', function () {
+    test('comment', [
+      [ '# comment', ' comment', '']
+    ]);
+  });
 });
