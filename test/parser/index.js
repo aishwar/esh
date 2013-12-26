@@ -81,4 +81,13 @@ describe('Parser', function () {
       [ '<=', '<=', 'Less than or equal to' ]
     ]);
   });
+  
+  it ('should parse variables', function () {
+    test('variable', [
+      [ '$var', '$var', 'Name with only letters'],
+      [ '$vv1', '$vv1', 'Name with letters and numbers'],
+      [ '$v.i', '$v.i', 'Name with dots (used when reading nested values)']
+    ]);
+  });
+  
 });
