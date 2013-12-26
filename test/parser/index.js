@@ -3,30 +3,28 @@ var parser = require('../../lib/parser');
 
 describe('Parser', function () {
 
-  it ('should parse strings', function () {
-    var tests = [
-      // [ input, output, test-description ]
-      [ "'hello'", "hello", "Single quoted string" ],
-      [ '"hello"', "hello", "Double quoted string" ],
-      [ '"\\"hello\\""', '"hello"', "Single quoted string with escape sequence" ],
-      [ "'\\'hello\\''", "'hello'", "Double quoted string with escape sequence" ],
-      [ '"' + "m'i'xed" + '"', "m'i'xed", "Single quotes within double quoted string" ],
-      [ "'" + 'm"i"xed' + "'", 'm"i"xed', "Double quotes within single quoted string" ]
-    ];
-    
-    tests.forEach(function (test) {
-      try {
-        assert.deepEqual(parser.parse(test[0]), {
-          type: 'quoted-string',
-          value: test[1]
+  function test(nodeType, testCases) {
+    // testCases is a list, where each item is of the format:
+    //   [ input, output, test-description ]
+    testCases.forEach(function (detail) {
+        var input = detail[0],
+            expectedValue = detail[1],
+            description = detail[2];
+        assert.deepEqual(parser.parse(input), {
+          type: nodeType,
+          value: expectedValue
         });
-      } catch (e) {
-        console.error(e);
-        assert.fail(test[2]);
-      }
     });
+  }
+
+  it ('should parse strings', function () {
+    test('quoted-string', [
+      [ "'hello'", "hello", 'Single quoted string' ],
+      [ '"hello"', "hello", 'Double quoted string' ],
+      [ '"\\"hello\\""', '"hello"', 'Single quoted string with escape sequence' ],
+      [ "'\\'hello\\''", "'hello'", 'Double quoted string with escape sequence' ],
+      [ '"' + "m'i'xed" + '"', "m'i'xed", 'Single quotes within double quoted string' ],
+      [ "'" + 'm"i"xed' + "'", 'm"i"xed', 'Double quotes within single quoted string' ]
+    ]);
   });
-  
-  
-  
 });
