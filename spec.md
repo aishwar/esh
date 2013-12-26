@@ -3,21 +3,6 @@
     <shell-command>
     <shell-command> # <directive1>, <directive2>
 
-##### Short cut on command execution error handling
-
-This:
-
-    run command # failable
-    
-    if (!$command.ok) {
-      #! run command failed
-      exit:bad
-    }
-
-can be shrunk to:
-
-    run command #! run command failed
-
 #### Directive
 
     failable - do not terminate if this line fails
@@ -59,43 +44,6 @@ can be shrunk to:
       <else-body>
     }
 
-#### Condition
-
-    <expression>
-    <not><expression>
-    <expression> <operator> <expression>
-
-#### Literal
-
-	<string>
-	<number>
-	<array(string)>
-
-### Expression
-
-	<literal>
-    <variable>
-    <operation>
-
-#### Operations
-
-    number(<string>) - Takes in a string and converts it to a number
-	lines(<string>) - Takes in a string and returns an array of strings
-    glob(<string>) - Takes in a glob expression and returns an array of file paths matching the expression
-
-#### Operator
-
-    ==
-    !=
-    <
-    <=
-    >
-    >=
-
-#### Variable
-
-    $<name>
-
 #### Switch
 
     switch (<condition>) {
@@ -106,6 +54,43 @@ can be shrunk to:
         <case2-body>
         break
     }
+
+#### Condition
+
+    <expression>
+    <not><expression>
+    <expression> <operator> <expression>
+
+### Expression
+
+    <literal>
+    <variable>
+    <operation>
+
+#### Literal
+
+    <string>
+    <number>
+    <array(string)>
+
+#### Variable
+
+    $<name>
+
+#### Operations
+
+    number(<expression>:string) - <expression> has to return a <string>. Takes in the string and converts it to a number
+    lines(<expression>:string) - <expression> has to return a <string>. Takes in a string and returns an array of strings
+    glob(<string>) - Takes in a glob expression and returns an array of file paths matching the expression
+
+#### Operator
+
+    ==
+    !=
+    <
+    <=
+    >
+    >=
 
 #### Loop
 
@@ -118,17 +103,16 @@ can be shrunk to:
 #### Usage
 
     Usage {
-      <Option Description 1>
-      <Option Description 2>
+      <string>
+      <string>
     }
 
-#### Option Description
+Example:
 
-    -<short-opt>, --<long-opt> <other-params>: <description>
-
-For example:
-
-    -f, --file <filename>: File to run process on
+    Usage {
+      '-f, --file <filename>: File to run process on'
+      'This is general note on what this script does'
+    }
 
 #### Validation
 
