@@ -381,4 +381,53 @@ describe('Parser', function () {
       ]
     ])
   });
+  
+  it ('should parse operations', function () {
+    test('operation', [
+    
+      // Test all valid token combinations of "number" inputs
+      [ 'number("abc")', {
+        name: 'number',
+        input: atom('literal:string', 'abc')
+      }, 'number(<string-literal>)'],
+      
+      [ 'number($command.out)', {
+        name: 'number',
+        input: atom('variable', 'command.out')
+      }, 'number(<variable>)'],
+      
+      [ 'number(12)', {
+        name: 'number',
+        input: atom('literal:number', 12)
+      }, 'number(<number-literal>)'],
+      
+      // Test all valid token combinations of "lines" inputs
+      [ 'lines("abc")', {
+        name: 'lines',
+        input: atom('literal:string', 'abc')
+      }, 'lines(<string-literal>)'],
+      
+      [ 'lines($command.out)', {
+        name: 'lines',
+        input: atom('variable', 'command.out')
+      }, 'lines(<variable>)'],
+      
+      // Test all valid token combinations of "glob" inputs
+      [ 'glob("abc")', {
+        name: 'glob',
+        input: atom('literal:string', 'abc')
+      }, 'glob(<string-literal>)'],
+      
+      [ 'glob($command.out)', {
+        name: 'glob',
+        input: atom('variable', 'command.out')
+      }, 'glob(<variable>)'],
+      
+      // Test whitespace in between operation tokens
+      [ 'number  (\t"abc"\t )', {
+        name: 'number',
+        input: atom('literal:string', 'abc')
+      }, 'whitespaces after operation-name, after opening paranthesis, before closing paranthesis']
+    ]);
+  });
 });
