@@ -135,7 +135,7 @@ describe('Parser', function () {
     
   
   
-    describe('Comparisons in if-statements', function () {
+    describe('  Comparisons in if-statements', function () {
       it ('should be parsed', function () {
         test('if', [
           [ 'if ($a > 1) {}',
@@ -238,7 +238,7 @@ describe('Parser', function () {
     });
     
     
-    describe('Body in if-statement', function () {
+    describe('  Body in if-statement', function () {
       it ('should be parsed', function () {
         test('if', [
           [ 'if ($a) {\n\t## This is great\n}', {
@@ -278,6 +278,53 @@ describe('Parser', function () {
                 ]
               }
             ]
+          }, 'Nested if-statement in body']
+        ]);
+      });
+    });
+    
+    
+    describe('  Body in else block of if-statement', function () {
+      it ('should be parsed', function () {
+        test('if', [
+          [ 'if ($a) {} else {}', {
+            condition: atom('variable', 'a'),
+            alternate: [],
+            body: []
+          }, 'Log statement in body'],
+          
+          
+          [ 'if ($a) {} else {\n' +
+            '  ## This is great\n' +
+            '  #! This is an error\n' +
+            '}', {
+            condition: atom('variable', 'a'),
+            alternate: [
+              atom('log:out', 'This is great'),
+              atom('log:err', 'This is an error')
+            ],
+            body: []
+          }, 'Multiple statements in body (out and err)'],
+          
+          
+          [ 'if ($a) {\n\t\n} else {\n' +
+            '  ## This is great\n' +
+            '  if ($b) {\n' + 
+            '    ## abc\n' +
+            '  }\n' +
+            '}', {
+            condition: atom('variable', 'a'),
+            alternate: [
+              atom('log:out', 'This is great'),
+              {
+                type: 'if',
+                condition: atom('variable', 'b'),
+                body: [
+                  atom('log:out', 'abc')
+                ]
+              }
+            ],
+            body: []
           }, 'Nested if-statement in body']
         ]);
       });
