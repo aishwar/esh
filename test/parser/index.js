@@ -2,7 +2,6 @@ var assert = require('assert');
 var parser = require('../../lib/parser');
 var helper = require('./helper');
 
-
 describe('Parser', function () {
 
   function test(nodeType, testCases) {
@@ -428,6 +427,26 @@ describe('Parser', function () {
         name: 'number',
         input: atom('literal:string', 'abc')
       }, 'whitespaces after operation-name, after opening paranthesis, before closing paranthesis']
+    ]);
+  });
+  
+  it ('should parse special words', function () {
+    test('special-word', [
+      [ 'exit:bad', { name: 'exit:bad' }, 'Bad exit'],
+      [ 'exit:ok', { name: 'exit:ok' }, 'Good exit']
+    ]);
+  });
+  
+  it ('should parse commands', function () {
+    test('command', [
+      // Basic commands
+      [ 'ls', 'ls', 'Command with no args'],
+      [ 'mv abc def', 'mv abc def', 'Command with args'],
+      [ 'mkdir "abc\\"def"', 'mkdir "abc\\"def"', 'Escaped sequences in strings in command'],
+      [ 'cd "my folder"', 'cd "my folder"', 'Double quoted string in command'],
+      [ "cd 'my folder'", "cd 'my folder'", 'Single quoted string in command'],
+      [ "mv 'my folder' \"another folder\"", "mv 'my folder' \"another folder\"", 
+        'Multiple quoted strings in command']
     ]);
   });
 });
