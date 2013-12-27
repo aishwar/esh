@@ -330,4 +330,55 @@ describe('Parser', function () {
       });
     });
   });
+    
+    
+  it ('should parse blocks', function () {
+    test('block', [
+      [ 'OnError {\n' +
+        '  #! Error occurred!\n' +
+        '  #! Exiting.\n' +
+        '}',
+        {
+          name: 'OnError',
+          body: [
+            atom('log:err', 'Error occurred!'),
+            atom('log:err', 'Exiting.')
+          ]
+        },
+        'OnError block'
+      ],
+      
+      [ 'CleanUp {\n' +
+        '  ## Cleaning up\n' +
+        '  if ($a) {}\n' +
+        '}',
+        {
+          name: 'CleanUp',
+          body: [
+            atom('log:out', 'Cleaning up'),
+            {
+              type: 'if',
+              condition: atom('variable', 'a'),
+              body: []
+            }
+          ]
+        },
+        'CleanUp block with an if statement inside'
+      ],
+      
+      [ 'Usage {\n' +
+        '  "-f --file <filename>: Input file"\n' +
+        "  'Here is some text in single quotes'\n" +
+        '}',
+        {
+          name: 'Usage',
+          body: [
+            atom('literal:string', '-f --file <filename>: Input file'),
+            atom('literal:string', 'Here is some text in single quotes')
+          ]
+        },
+        'Usage block with strings inside'
+      ]
+    ])
+  });
 });
