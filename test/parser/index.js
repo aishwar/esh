@@ -1,6 +1,8 @@
+require('colors');
 var assert = require('assert');
 var parser = require('../../lib/parser');
 var helper = require('./helper');
+var diffString = require('json-diff').diffString;
 
 describe('Parser', function () {
 
@@ -40,16 +42,11 @@ describe('Parser', function () {
         }
         
         // Prepare the failure message in case it has to be printed
-        failureMessage = 
-          'Expected: ' + helper.print(expected) + '\n' +
-          'Actual: ' + helper.print(output) + '\n';
+        failureMessage = 'Here is the difference from the expected results:\n'.white + 
+          diffString(expected, output);
         
         // Do the deep equal, because I like to see the diff between the nodes
         assert.deepEqual(output, expected, failureMessage);
-        // Ensure types are what we expect as well
-        if (expected.value !== output.value) {
-          throw new Error('Type error in value. Expected: ' + JSON.stringify(expected) + ', Received: ' + JSON.stringify(output));
-        }
       });
     });
   }
