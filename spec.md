@@ -2,6 +2,7 @@
 
     <shell-command>
     <shell-command> # <directive1>, <directive2>
+    mv '# how are you'
 
 #### Directive
 
@@ -9,9 +10,10 @@
 
 #### Exit
 
-    exit <number>
     exit:bad - Exit with an error code of 1
     exit:ok - Exit with an error code of 0
+
+The `exit(<number>)` operation can be used to exit the script as well.
 
 ### Special Variable
 
@@ -44,7 +46,7 @@
       <else-body>
     }
 
-#### Switch
+#### Switch [NOT IMPLEMENTED]
 
     switch (<variable>) {
       case <value1>:
@@ -85,7 +87,8 @@
 
     number(<expression>:string) - <expression> has to return a <string>. Takes in the string and converts it to a number
     lines(<expression>:string) - <expression> has to return a <string>. Takes in a string and returns an array of strings
-    glob(<string>) - Takes in a glob expression and returns an array of file paths matching the expression
+    glob(<expression>:string) - Takes in a glob expression and returns an array of file paths matching the expression
+    exit(<expression>:number) - Exits the script with the passed in exit code
 
 #### Operator
 
@@ -98,7 +101,7 @@
 
 #### Loop
 
-    loop (<array>) {
+    loop (<array> : <var:$val>, <var:$idx>) {
       $val and $idx become available in this block
       break and continue are also available
       <body>
@@ -118,7 +121,7 @@ Example:
       'This is general note on what this script does'
     }
 
-#### Validation
+#### Validation [NOT IMPLEMENTED]
 
 Executes before the script body executes. This is a place to validate user input
 
