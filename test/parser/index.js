@@ -1,5 +1,7 @@
 var assert = require('assert');
 var parser = require('../../lib/parser');
+var helper = require('./helper');
+
 
 describe('Parser', function () {
 
@@ -30,12 +32,15 @@ describe('Parser', function () {
           output = parser.parse(input)
         } catch (e) {
           if (e instanceof parser.SyntaxError) {
-            throw new Error('Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + e.message);
+            throw new Error('Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + e.message +
+              '\n\tError at line ' + e.line + ', column ' + e.column);
           }
         }
         
         if (description) {
-          description += '.\n\tExpected: ' + JSON.stringify(expected) + '.\n\tReceived: ' + JSON.stringify(output);
+          description += '.\n' +
+            'Expected: ' + helper.print(expected) + '\n' +
+            'Actual: ' + helper.print(output) + '\n';
         }
         // Do the deep equal, because I like to see the diff between the nodes
         assert.deepEqual(output, expected, description);
@@ -112,21 +117,11 @@ describe('Parser', function () {
   it ('should parse if-statements', function () {
     
     test('if', [
-      [ 'if ($a) {} ', {
-        condition: atom('variable', 'a')
-      },
-      'Variable used as a condition' ],
-      
-      [ 'if (!$a) {} ', {
-        condition: atom('not', atom('variable', 'a'))
-      },
-      'Variable used as a condition' ],
-      
-      [ ' if  ( $a )  { \n\t }  ', {
-        condition: atom('variable', 'a')
-      },
-      'whitespace before/after if; before/after condition; multiple whitespaces' ],
-      
+      [ 'if ($a) {} ', {condition: atom('variable', 'a'), body: []}, 'Variable used as a condition' ],
+      [ 'if (!$a) {} ', {condition: atom('not', atom('variable', 'a')), body: []},
+        'Variable used as a condition' ],
+      [ ' if  ( $a )  { \n\t }  ', {condition: atom('variable', 'a'), body: []},
+        'whitespace before/after if; before/after condition; multiple whitespaces' ],
       [ ' if ( $a  >=  5 ) {}', {
         condition: {
           type: 'comparison',
@@ -134,13 +129,13 @@ describe('Parser', function () {
           right: atom('literal:number', 5),
           operator: atom('operator', '>=')
         },
+        body: [],
       }, 'Comparison used as a condition' ],
-      
     ]);
     
   
   
-    describe('comparisons in if statements', function () {
+    describe('Comparisons in if-statements', function () {
       it ('should be parsed', function () {
         test('if', [
           [ 'if ($a > 1) {}',
@@ -150,7 +145,8 @@ describe('Parser', function () {
                 operator: atom('operator', '>'),
                 left: atom('variable', 'a'),
                 right: atom('literal:number', 1)
-              }
+              },
+              body: []
             },
             '<variable> <operator> <number> : greater than' ],
           
@@ -161,7 +157,8 @@ describe('Parser', function () {
                 operator: atom('operator', '<'),
                 left: atom('variable', 'a'),
                 right: atom('literal:number', 1)
-              }
+              },
+              body: []
             },
             '<variable> <operator> <number> : greater than' ],
           
@@ -172,7 +169,8 @@ describe('Parser', function () {
                 operator: atom('operator', '>='),
                 left: atom('variable', 'a'),
                 right: atom('literal:number', 1)
-              }
+              },
+              body: []
             },
             '<variable> <operator> <number> : greater than' ],
             
@@ -183,7 +181,8 @@ describe('Parser', function () {
                 operator: atom('operator', '<='),
                 left: atom('variable', 'a'),
                 right: atom('literal:number', 1)
-              }
+              },
+              body: []
             },
             '<variable> <operator> <number> : not equal to' ],
           
@@ -194,7 +193,8 @@ describe('Parser', function () {
                 operator: atom('operator', '=='),
                 left: atom('literal:number', 1),
                 right: atom('literal:number', 1)
-              }
+              },
+              body: []
             },
             '<number> <whitespace> <operator> <whitespace> <number> : equal to' ],
             
@@ -205,7 +205,8 @@ describe('Parser', function () {
                 operator: atom('operator', '!='),
                 left: atom('variable', 'command.err'),
                 right: atom('literal:string', "")
-              }
+              },
+              body: []
             },
             '<nested.variable> <operator> <string> : not equal to' ],
             
@@ -216,7 +217,8 @@ describe('Parser', function () {
                 operator: atom('operator', '=='),
                 left: atom('literal:string', 'done'),
                 right: atom('variable', 'command.out')
-              }
+              },
+              body: []
             },
             '[start-of-line-whitespace] <string> <operator> <nested.variable> : equal to' ],
             
@@ -227,9 +229,56 @@ describe('Parser', function () {
                 operator: atom('operator', '=='),
                 left: atom('literal:string', 'done'),
                 right: atom('variable', 'command.out')
-              }
+              },
+              body: []
             },
             '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ]
+        ]);
+      });
+    });
+    
+    
+    describe('Body in if-statement', function () {
+      it ('should be parsed', function () {
+        test('if', [
+          [ 'if ($a) {\n\t## This is great\n}', {
+            condition: atom('variable', 'a'),
+            body: [
+              atom('log:out', 'This is great')
+            ]
+          }, 'Log statement in body'],
+          
+          
+          [ 'if ($a) {\n' +
+            '  ## This is great\n' +
+            '  #! This is an error\n' +
+            '}', {
+            condition: atom('variable', 'a'),
+            body: [
+              atom('log:out', 'This is great'),
+              atom('log:err', 'This is an error')
+            ]
+          }, 'Multiple statements in body (out and err)'],
+          
+          
+          [ 'if ($a) {\n' +
+            '  ## This is great\n' +
+            '  if ($b) {\n' + 
+            '    ## abc\n' +
+            '  }\n' +
+            '}', {
+            condition: atom('variable', 'a'),
+            body: [
+              atom('log:out', 'This is great'),
+              {
+                type: 'if',
+                condition: atom('variable', 'b'),
+                body: [
+                  atom('log:out', 'abc')
+                ]
+              }
+            ]
+          }, 'Nested if-statement in body']
         ]);
       });
     });
