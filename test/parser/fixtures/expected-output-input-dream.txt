@@ -155,12 +155,11 @@
       {
         "body": [
           {
+            "directives": [
+              "failable"
+            ],
             "type": "command",
             "value": "rm -rf $dir "
-          },
-          {
-            "type": "comment",
-            "value": " failable"
           },
           {
             "body": [

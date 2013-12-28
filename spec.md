@@ -2,6 +2,7 @@
 
     <shell-command>
     <shell-command> # <directive1>, <directive2>
+    <shell-command> #! the on error exit message
     mv '# how are you'
 
 #### Directive

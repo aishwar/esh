@@ -532,15 +532,35 @@ describe('Parser', function () {
   });
   
   describe ('should parse commands:', function () {
-    test('command', [
-      // Basic commands
-      [ 'ls', 'ls', 'Command with no args'],
-      [ 'mv abc def', 'mv abc def', 'Command with args'],
-      [ 'mkdir "abc\\"def"', 'mkdir "abc\\"def"', 'Escaped sequences in strings in command'],
-      [ 'cd "my folder"', 'cd "my folder"', 'Double quoted string in command'],
-      [ "cd 'my folder'", "cd 'my folder'", 'Single quoted string in command'],
-      [ "mv 'my folder' \"another folder\"", "mv 'my folder' \"another folder\"", 
-        'Multiple quoted strings in command']
-    ]);
+  
+    describe ('basic commands', function () {
+      test('command', [
+        [ 'ls', 'ls', 'Command with no args'],
+        [ 'mv abc def', 'mv abc def', 'Command with args'],
+        [ 'mkdir "abc\\"def"', 'mkdir "abc\\"def"', 'Escaped sequences in strings in command'],
+        [ 'cd "my folder"', 'cd "my folder"', 'Double quoted string in command'],
+        [ "cd 'my folder'", "cd 'my folder'", 'Single quoted string in command'],
+        [ "mv 'my folder' \"another folder\"", "mv 'my folder' \"another folder\"", 
+          'Multiple quoted strings in command']
+      ]);
+    });
+    
+    describe ('with directives', function () {
+      test('command', [
+        [ 'ls # directive', {value: 'ls ', directives: ['directive']}, '1 directive'],
+        [ 'ls # dir1, dir2', {value: 'ls ', directives: ['dir1', 'dir2']}, 'multiple directives (2)'],
+        [ 'echo "# how nice is this" # orange', {value: 'echo "# how nice is this" ', directives: ['orange']}, 'hash within double quoted string is not interpreted as directive'],
+        [ 'echo \'# how nice is this\' # orange', {value: 'echo \'# how nice is this\' ', directives: ['orange']}, 'hash within single quoted string is not interpreted as directive']
+      ]);
+    });
+    
+    describe ('with custom onError message', function () {
+      test('command', [
+        [ 'ls #! error', {value: 'ls ', errorMessage: 'error'}, 'error message']
+      ]);
+    });
+    
   });
+    
 });
+
