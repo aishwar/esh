@@ -151,6 +151,51 @@
       {
         "type": "command",
         "value": "head -n -$deployment.keep_history"
+      },
+      {
+        "body": [
+          {
+            "type": "command",
+            "value": "rm -rf $dir "
+          },
+          {
+            "type": "comment",
+            "value": " failable"
+          },
+          {
+            "body": [
+              {
+                "type": "log:err",
+                "value": "Could not remove $dir. Code: $command.code, Error: $command.err"
+              }
+            ],
+            "condition": {
+              "type": "not",
+              "value": {
+                "type": "variable",
+                "value": "command.ok"
+              }
+            },
+            "type": "if"
+          }
+        ],
+        "indexProperty": {
+          "type": "variable",
+          "value": "idx"
+        },
+        "list": {
+          "input": {
+            "type": "variable",
+            "value": "command.out"
+          },
+          "name": "lines",
+          "type": "operation"
+        },
+        "type": "loop",
+        "valueProperty": {
+          "type": "variable",
+          "value": "dir"
+        }
       }
     ],
     "name": "CleanUp",

@@ -50,4 +50,12 @@ CleanUp {
   ## Cleaning up older deployments
   # Locate anything older than the last $deployment.keep_history deployments
   head -n -$deployment.keep_history
+  
+  loop (lines($command.out) : $dir, $idx) {
+    rm -rf $dir # failable
+    
+    if (!$command.ok) {
+      #! Could not remove $dir. Code: $command.code, Error: $command.err
+    }
+  }
 }

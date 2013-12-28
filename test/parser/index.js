@@ -447,6 +447,83 @@ describe('Parser', function () {
     ]);
   });
   
+  describe ('should parse loops:', function () {
+    test('loop', [
+    
+      // Common inputs
+        
+      [ 'loop (lines($command.out) : $filename, $idx) {}',
+        {
+          list: {
+            type: 'operation',
+            name: 'lines',
+            input: atom('variable', 'command.out')
+          },
+          valueProperty: atom('variable', 'filename'),
+          indexProperty: atom('variable', 'idx'),
+          body: []
+        },
+        'Loop over results of the lines operation; retrieve value and index in each iteration'],
+      
+      [ 'loop (glob("/*") : $filename, $index) {}',
+        {
+          list: {
+            type: 'operation',
+            name: 'glob',
+            input: atom('literal:string', '/*')
+          },
+          valueProperty: atom('variable', 'filename'),
+          indexProperty: atom('variable', 'index'),
+          body: []
+        },
+        'Loop over results of the glob operation; retrieve value and index in each iteration'],
+      
+      // Loop body
+      [ 'loop (glob("/*") : $filename, $idx) {\n' +
+        '  # Printing $filename\n' +
+        '  ## file: $filename\n' +
+        '  mv $filename "renamed-$filename"\n' +
+        '}',
+        {
+          list: {
+            type: 'operation',
+            name: 'glob',
+            input: atom('literal:string', '/*')
+          },
+          valueProperty: atom('variable', 'filename'),
+          indexProperty: atom('variable', 'idx'),
+          body: [
+            atom('comment', ' Printing $filename'),
+            atom('log:out', 'file: $filename'),
+            atom('command', 'mv $filename "renamed-$filename"')
+          ]
+        },
+        'Loop with body containing a set of statements'],
+        
+      // Loop body with whitespaces
+      [ '\tloop\t\n(glob("/*") \t : \t $filename,\t\t $index \t)\t\n{\n' +
+        '\t  # Printing $filename\n' +
+        '\t  ## file: $filename\n' +
+        '\t  mv $filename "renamed-$filename"\n' +
+        '\t}\t\n',
+        {
+          list: {
+            type: 'operation',
+            name: 'glob',
+            input: atom('literal:string', '/*')
+          },
+          valueProperty: atom('variable', 'filename'),
+          indexProperty: atom('variable', 'index'),
+          body: [
+            atom('comment', ' Printing $filename'),
+            atom('log:out', 'file: $filename'),
+            atom('command', 'mv $filename "renamed-$filename"')
+          ]
+        },
+        'Loop with whitespace before/after every part of the loop'],
+    ]);
+  });
+  
   describe ('should parse special words:', function () {
     test('special-word', [
       [ 'exit:bad', { name: 'exit:bad' }, 'Bad exit'],
