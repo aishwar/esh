@@ -1,0 +1,44 @@
+[
+  {
+    "type": "comment",
+    "value": " Comment"
+  },
+  {
+    "type": "log:out",
+    "value": "Log1"
+  },
+  {
+    "alternate": [
+      {
+        "type": "log:err",
+        "value": "Stop"
+      }
+    ],
+    "body": [
+      {
+        "type": "log:out",
+        "value": "Go"
+      }
+    ],
+    "condition": {
+      "left": {
+        "type": "variable",
+        "value": "action"
+      },
+      "operator": {
+        "type": "operator",
+        "value": "=="
+      },
+      "right": {
+        "type": "literal:string",
+        "value": "go"
+      },
+      "type": "comparison"
+    },
+    "type": "if"
+  },
+  {
+    "type": "log:out",
+    "value": "Done!"
+  }
+]

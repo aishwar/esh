@@ -1,0 +1,159 @@
+[
+  {
+    "body": [
+      {
+        "type": "literal:string",
+        "value": "-v, --version: Prints the version number of this script"
+      },
+      {
+        "type": "literal:string",
+        "value": "-p, --properties <filename>: File that contains the property values for this script"
+      },
+      {
+        "type": "literal:string",
+        "value": "This is a node.js deployment script. It pulls code from a remote repo and deploys it locally."
+      }
+    ],
+    "name": "Usage",
+    "type": "block"
+  },
+  {
+    "body": [
+      {
+        "body": [
+          {
+            "type": "log:out",
+            "value": "Version 0.1"
+          },
+          {
+            "name": "exit:ok",
+            "type": "special-word"
+          }
+        ],
+        "condition": {
+          "type": "variable",
+          "value": "arg.version"
+        },
+        "type": "if"
+      },
+      {
+        "type": "log:out",
+        "value": "Creating and switching to the new deployment directory"
+      },
+      {
+        "type": "command",
+        "value": "mkdir -p $deployment.newdir"
+      },
+      {
+        "type": "command",
+        "value": "cd $deploy.newdir"
+      },
+      {
+        "type": "log:out",
+        "value": "Getting the lastest code from the repo"
+      },
+      {
+        "type": "command",
+        "value": "git clone $repo"
+      },
+      {
+        "type": "log:out",
+        "value": "Switching to the production branch"
+      },
+      {
+        "type": "command",
+        "value": "git checkout prod"
+      },
+      {
+        "type": "log:out",
+        "value": "Install node.js dependencies"
+      },
+      {
+        "type": "command",
+        "value": "npm install"
+      },
+      {
+        "type": "log:out",
+        "value": "Stopping the running server"
+      },
+      {
+        "type": "command",
+        "value": "forever stop $app.path"
+      },
+      {
+        "type": "log:out",
+        "value": "Link the application to the new deployment directory"
+      },
+      {
+        "type": "command",
+        "value": "ln -sfn $app.path $deployment.newdir"
+      },
+      {
+        "type": "log:out",
+        "value": "Starting the server running the new code"
+      },
+      {
+        "type": "command",
+        "value": "forever start $app.path"
+      },
+      {
+        "type": "log:out",
+        "value": "Add the new deployment directory to the deployment history"
+      },
+      {
+        "type": "command",
+        "value": "echo $deployment.newdir >> $deployment.history"
+      }
+    ],
+    "name": "Main",
+    "type": "block"
+  },
+  {
+    "body": [
+      {
+        "type": "log:out",
+        "value": "Reverting to old deployment due to error in deploying new code"
+      },
+      {
+        "type": "command",
+        "value": "ln -sfn $app.path $deployment.olddir"
+      },
+      {
+        "type": "log:out",
+        "value": "Starting the server"
+      },
+      {
+        "type": "command",
+        "value": "forever start $app.path"
+      },
+      {
+        "type": "log:out",
+        "value": "Remove the new directories created"
+      },
+      {
+        "type": "command",
+        "value": "rm -rf $deployment.newdir"
+      }
+    ],
+    "name": "OnError",
+    "type": "block"
+  },
+  {
+    "body": [
+      {
+        "type": "log:out",
+        "value": "Cleaning up older deployments"
+      },
+      {
+        "type": "comment",
+        "value": " Locate anything older than the last $deployment.keep_history deployments"
+      },
+      {
+        "type": "command",
+        "value": "head -n -$deployment.keep_history"
+      }
+    ],
+    "name": "CleanUp",
+    "type": "block"
+  }
+]

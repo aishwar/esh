@@ -1,6 +1,25 @@
 
+function type(obj) {
+  return Object.prototype.toString.call(obj);
+}
+
+function isArray(obj) {
+  return type(obj) == '[object Array]';
+}
+
+function isObject(obj) {
+  return type(obj) == '[object Object]';
+}
+
+function isPrimitive(obj) {
+  return !obj || typeof obj != "object";
+}
 
 function organize(obj) {
+  if (isPrimitive(obj)) return obj;
+  if (isArray(obj)) return obj.map(organize);
+  
+  // Else this is an object
   var keys = Object.keys(obj).sort();
   var result = {};
   var key, value;
@@ -8,13 +27,7 @@ function organize(obj) {
   for (var i = 0; i < keys.length; i++) {
     key = keys[i];
     value = obj[key];
-    
-    // If value is an object, organize it as well
-    if (Object.prototype.toString.call(value) === '[object Object]') {
-      result[key] = organize(value);
-    } else {
-      result[key] = value;
-    }
+    result[key] = organize(value);
   }
   
   return result;

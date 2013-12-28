@@ -1,7 +1,6 @@
 require('colors');
 var assert = require('assert');
 var parser = require('../../lib/parser');
-var helper = require('./helper');
 var diffString = require('json-diff').diffString;
 
 describe('Parser', function () {
@@ -12,10 +11,11 @@ describe('Parser', function () {
     testCases.forEach(function (detail) {
         var input = detail[0],
             description = detail[2],
+            run = detail[3] ? it.only : it,
             output,
             expected;
         
-      it (description, function () {
+      run (description, function () {
         var failureMessage = "";
         
         // When a simple type is passed as the expected value, the node is expected to contain
@@ -31,6 +31,11 @@ describe('Parser', function () {
           expected = detail[1];
           expected.type = nodeType;
         }
+        
+        // "parse" outputs a list where item in the list represents an instruction. These tests
+        // test only 1 instruction; so we wrap the expected object in a list; thus creating a 
+        // list of 1 item
+        expected = [ expected ];
         
         try {
           output = parser.parse(input)
@@ -97,16 +102,6 @@ describe('Parser', function () {
     ]);
   });
   
-  describe ('should parse whitespace:', function () {
-    test('whitespace', [
-      [ ' ', ' ', 'Single Space'],
-      [ '   ', '   ', 'Multiple Spaces'],
-      [ '\n \n', '\n \n', 'Newline'],
-      [ '\r \r', '\r \r', 'Carriage Returns'],
-      [ ' \t \t ', ' \t \t ', 'Tabs']
-    ]);
-  });
-  
   function atom(type, val) {
     return {
       type: type,
@@ -117,10 +112,14 @@ describe('Parser', function () {
   describe ('should parse if-statements:', function () {
     
     test('if', [
-      [ 'if ($a) {} ', {condition: atom('variable', 'a'), body: []}, 'Variable used as a condition' ],
+      [ 'if ($a) {} ', {condition: atom('variable', 'a'), body: []}, 'Variable used as a condition'],
       [ 'if (!$a) {} ', {condition: atom('not', atom('variable', 'a')), body: []},
-        'Variable used as a condition' ],
-      [ ' if  ( $a )  { \n\t }  ', {condition: atom('variable', 'a'), body: []},
+        'Negated variable used as a condition' ],
+      
+      [ '\n\nif\n(\n$a\n)\n{\n}\n', {condition: atom('variable', 'a'), body: []},
+        'line starting with a closing brace IS NOT A command' ],
+      
+      [ ' if  ( $a ) \n { \n\t }\n', {condition: atom('variable', 'a'), body: []},
         'whitespace before/after if; before/after condition; multiple whitespaces' ],
       [ ' if ( $a  >=  5 ) {}', {
         condition: {
@@ -276,7 +275,14 @@ describe('Parser', function () {
             ]
           }
         ]
-      }, 'Nested if-statement in body']
+      }, 'Nested if-statement in body'],
+      
+       [ 'if ($a) {\n\tcat test\n}', {
+        condition: atom('variable', 'a'),
+        body: [
+          atom('command', 'cat test')
+        ]
+      }, 'Log statement in body'],
     ]);
   });
     
@@ -328,6 +334,14 @@ describe('Parser', function () {
     
   describe ('should parse blocks:', function () {
     test('block', [
+      [ 'OnError {}',
+        {
+          name: 'OnError',
+          body: []
+        },
+        'Block with no content'
+      ],
+      
       [ 'OnError {\n' +
         '  #! Error occurred!\n' +
         '  #! Exiting.\n' +
@@ -372,6 +386,14 @@ describe('Parser', function () {
           ]
         },
         'Usage block with strings inside'
+      ],
+      
+      [ 'Main {}',
+        {
+          name: 'Main',
+          body: []
+        },
+        'Main block'
       ]
     ])
   });
