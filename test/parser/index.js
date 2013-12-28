@@ -462,6 +462,18 @@ describe('Parser', function () {
     test('loop', [
     
       // Common inputs
+      
+      [ 'loop ($deploy.servers : $server, $idx) {}',
+        {
+          list: {
+            type: 'variable',
+            value: 'deploy.servers'
+          },
+          valueProperty: atom('variable', 'server'),
+          indexProperty: atom('variable', 'idx'),
+          body: []
+        },
+        'Loop over variable; retrieve value and index in each iteration'],
         
       [ 'loop (lines($command.out) : $filename, $idx) {}',
         {
