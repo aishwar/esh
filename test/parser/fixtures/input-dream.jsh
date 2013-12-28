@@ -1,4 +1,6 @@
 
+load('dream.vals')
+
 Usage {
   '-v, --version: Prints the version number of this script'
   '-p, --properties <filename>: File that contains the property values for this script'

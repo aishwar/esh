@@ -439,6 +439,17 @@ describe('Parser', function () {
         input: atom('variable', 'command.out')
       }, 'glob(<variable>)'],
       
+      // Test all valid token combinations of "load" inputs
+      [ 'load("abc")', {
+        name: 'load',
+        input: atom('literal:string', 'abc')
+      }, 'load(<string-literal>)'],
+      
+      [ 'load($command.out)', {
+        name: 'load',
+        input: atom('variable', 'command.out')
+      }, 'load(<variable>)'],
+      
       // Test whitespace in between operation tokens
       [ 'number  (\t"abc"\t )', {
         name: 'number',

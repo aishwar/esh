@@ -1,5 +1,13 @@
 [
   {
+    "input": {
+      "type": "literal:string",
+      "value": "dream.vals"
+    },
+    "name": "load",
+    "type": "operation"
+  },
+  {
     "body": [
       {
         "type": "literal:string",
