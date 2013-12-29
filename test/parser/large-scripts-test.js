@@ -1,9 +1,10 @@
 require('colors');
+var fs = require('fs');
 var assert = require('assert');
 var parser = require('../../lib/parser');
 var helper = require('./helper');
 var diffString = require('json-diff').diffString;
-var fs = require('fs');
+var removePositionData = require('./remove-position-data');
 
 function test(description, inputFileName) {
   describe(description, function () {
@@ -14,12 +15,13 @@ function test(description, inputFileName) {
       
       try {
         output = parser.parse(input);
+        removePositionData(output);
       } catch (e) {
         if (e instanceof parser.SyntaxError) {
           e.message = (('\n\tSyntax error at line: ' + e.line + ', column: ' + e.column + '.\n\t' 
             + e.message).yellow);
-          throw e;
         }
+        throw e;
       }
       
       // Write out the results of the last run

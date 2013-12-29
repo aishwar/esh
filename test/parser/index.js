@@ -2,6 +2,7 @@ require('colors');
 var assert = require('assert');
 var parser = require('../../lib/parser');
 var diffString = require('json-diff').diffString;
+var removePositionData = require('./remove-position-data');
 
 describe('Parser', function () {
 
@@ -38,12 +39,14 @@ describe('Parser', function () {
         expected = [ expected ];
         
         try {
-          output = parser.parse(input)
+          output = parser.parse(input);
+          removePositionData(output);
         } catch (e) {
           if (e instanceof parser.SyntaxError) {
-            throw new Error('Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + e.message +
-              '\n\tError at line ' + e.line + ', column ' + e.column);
+            e.message = 'Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + 
+              e.message + '\n\tError at line ' + e.line + ', column ' + e.column
           }
+          throw e;
         }
         
         // Prepare the failure message in case it has to be printed
@@ -282,7 +285,7 @@ describe('Parser', function () {
         body: [
           atom('command', 'cat test')
         ]
-      }, 'Log statement in body'],
+      }, 'command in body'],
     ]);
   });
     
@@ -293,7 +296,7 @@ describe('Parser', function () {
         condition: atom('variable', 'a'),
         alternate: [],
         body: []
-      }, 'Log statement in body'],
+      }, 'Empty else block'],
       
       
       [ 'if ($a) {} else {\n' +
