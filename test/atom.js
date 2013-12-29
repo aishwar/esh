@@ -11,16 +11,21 @@ function atom(type, value) {
   
   switch (type) {
     case 'variable':
-      return {
+      result = {
         type: type,
         name: value,
         valueType: (value === 'command.ok') ? 'number' : 'string'
       };
+      break;
     case 'literal:number':
       result.valueType = 'number';
-    default:
-      return result;
+      break;
+    case 'literal:string':
+      result.valueType = 'string';
+      break;
   }
+  
+  return result;
 }
 
 module.exports = atom;

@@ -32,7 +32,8 @@
       },
       "right": {
         "type": "literal:string",
-        "value": "go"
+        "value": "go",
+        "valueType": "string"
       },
       "type": "comparison"
     },

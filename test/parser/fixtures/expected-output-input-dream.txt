@@ -2,7 +2,8 @@
   {
     "input": {
       "type": "literal:string",
-      "value": "dream.vals"
+      "value": "dream.vals",
+      "valueType": "string"
     },
     "name": "load",
     "type": "operation"
@@ -11,15 +12,18 @@
     "body": [
       {
         "type": "literal:string",
-        "value": "-v, --version: Prints the version number of this script"
+        "value": "-v, --version: Prints the version number of this script",
+        "valueType": "string"
       },
       {
         "type": "literal:string",
-        "value": "-p, --properties <filename>: File that contains the property values for this script"
+        "value": "-p, --properties <filename>: File that contains the property values for this script",
+        "valueType": "string"
       },
       {
         "type": "literal:string",
-        "value": "This is a node.js deployment script. It pulls code from a remote repo and deploys it locally."
+        "value": "This is a node.js deployment script. It pulls code from a remote repo and deploys it locally.",
+        "valueType": "string"
       }
     ],
     "name": "Usage",
