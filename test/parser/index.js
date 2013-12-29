@@ -124,7 +124,7 @@ describe('Parser', function () {
           type: 'comparison',
           left: atom('variable', 'a'),
           right: atom('literal:number', 5),
-          operator: atom('operator', '>=')
+          operator: '>='
         },
         body: [],
       }, 'Comparison used as a condition' ],
@@ -139,7 +139,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '>'),
+            operator: '>',
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
@@ -151,7 +151,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '<'),
+            operator: '<',
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
@@ -163,7 +163,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '>='),
+            operator: '>=',
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
@@ -175,7 +175,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '<='),
+            operator: '<=',
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
@@ -187,7 +187,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '=='),
+            operator: '==',
             left: atom('literal:number', 1),
             right: atom('literal:number', 1)
           },
@@ -199,7 +199,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '!='),
+            operator: '!=',
             left: atom('variable', 'command.err'),
             right: atom('literal:string', "")
           },
@@ -211,7 +211,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '=='),
+            operator: '==',
             left: atom('literal:string', 'done'),
             right: atom('variable', 'command.out')
           },
@@ -223,7 +223,7 @@ describe('Parser', function () {
         {
           condition: {
             type: 'comparison',
-            operator: atom('operator', '=='),
+            operator: '==',
             left: atom('literal:string', 'done'),
             right: atom('variable', 'command.out')
           },

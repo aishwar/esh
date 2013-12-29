@@ -26,10 +26,7 @@
         "type": "variable",
         "valueType": "string"
       },
-      "operator": {
-        "type": "operator",
-        "value": "=="
-      },
+      "operator": "==",
       "right": {
         "type": "literal:string",
         "value": "go",
