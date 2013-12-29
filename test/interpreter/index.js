@@ -78,6 +78,31 @@ describe('Interpreter:', function () {
       ]);
     });
     
+    
+    describe('"Usage" block: ', function () {
+      var BlockNode = NodeMap['block'];
+      
+      it ('should pass validation when everything is a string in it\'s body', function () {
+        var node = parser.parse([
+          'Usage {',
+          '   "abc"',
+          '   "def"',
+          '}'
+        ].join('\n'))[0];
+        assert.doesNotThrow(function () { BlockNode.validate(node); });
+      });
+      
+      it ('should fail validation when there is a non-string element in it\'s body', function () {
+        var node = parser.parse([
+          'Usage {',
+          '   mv abc',
+          '   "def"',
+          '}'
+        ].join('\n'))[0];
+        assert.throws(function () { BlockNode.validate(node); });
+      });
+    });
+    
   });
   
 });
