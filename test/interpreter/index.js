@@ -3,6 +3,7 @@ var assert = require('assert');
 var colors = require('colors');
 var NodeMap = require('../../lib/interpreter/load-node-map');
 var atom = require('../atom');
+var parser = require('../../lib/parser');
 
 describe('Interpreter:', function () {
 
@@ -40,84 +41,43 @@ describe('Interpreter:', function () {
     });
   });
   
-  function compare(left, right) {
-    return {
-      type: 'comparison',
-      left: left,
-      right: right,
-      operator: '==',
-      position: {
-        line: 0,
-        column: 0,
-        toString: function () {
-          return 'line 0, column 0';
-        }
-      }
-    };
-  }
-  
   //***********************
   // Beginning Node tests *
   //***********************
   
   describe('Nodes:', function () {
+  
     describe('comparison: ', function () {
-      
       var ComparisonNode = NodeMap['comparison'];
       var PASS = true, FAIL = false;
       
-      function makeNode(type) {
-        switch (type) {
-          case 'lines':
-            return {
-              name: 'lines',
-              input: 'abc',
-              type: 'operation',
-              valueType: 'array'
-            };
-          case 'number':
-            return {
-              name: 'number',
-              input: '"123"',
-              type: 'operation',
-              valueType: 'number'
-            }
-          case '$command.ok':
-            return atom('variable', 'command.ok');
-          case 'variable':
-          case 'literal:string':
-          case 'literal:number':
-            return atom(type, '0');
-          default:
-            throw new Error('Unknown Node type: ' + type);
-        }
-      }
-      
       function test(items) {
         items.forEach(function (item) {
-          var leftNode = makeNode(item[0]);
-          var rightNode = makeNode(item[1]);
-          var expectation = (item[2]) ? assert.doesNotThrow : assert.throws;
+          var comparison = 'if (' + item[0] + ') {}';
+          var ifNode = parser.parse(comparison)[0];
+          var expectation = (item[1]) ? assert.doesNotThrow : assert.throws;
+          var run = (item[2]) ? it.only : it;
           
-          it ('should ' + (item[2] ? 'pass' : 'fail') + ' validation when comparing '
-            + item[0] + ' and ' + item[1], function () {
+          run ('should ' + (item[1] ? 'pass' : 'fail') + ' validation on the comparison: '
+            + item[0], function () {
             expectation(function () {
-              ComparisonNode.validate(compare(leftNode, rightNode));
+              ComparisonNode.validate(ifNode.condition);
             });
           });
         });
       }
       
       test([
-        [ 'variable'        , 'literal:string'  , PASS ],
-        [ '$command.ok'     , 'literal:number'  , PASS ],
-        [ 'number'          , 'literal:number'  , PASS ],
-        [ 'variable'        , 'literal:number'  , FAIL ],
-        [ 'literal:string'  , 'literal:number'  , FAIL ],
-        [ '$command.ok'     , 'literal:string'  , FAIL ],
-        [ 'lines'           , 'literal:number'  , FAIL ]
+        [ '$a > "hello"'        , PASS ],
+        [ '$command.ok != 1'    , PASS ],
+        [ 'number("123") > 12'  , PASS ],
+        [ '$a > 5'                    , FAIL ],
+        [ '"hello" < 5'               , FAIL ],
+        [ '$command.ok != "y"'        , FAIL ],
+        [ 'lines($command.out) >= 5'  , FAIL ]
       ]);
     });
+    
   });
   
 });
