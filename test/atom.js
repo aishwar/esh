@@ -18,6 +18,7 @@ function atom(type, value) {
       };
       break;
     case 'literal:number':
+    case 'not':
       result.valueType = 'number';
       break;
     case 'literal:string':
