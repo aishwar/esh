@@ -402,56 +402,66 @@ describe('Parser', function () {
       // Test all valid token combinations of "number" inputs
       [ 'number("abc")', {
         name: 'number',
-        input: atom('literal:string', 'abc')
+        input: atom('literal:string', 'abc'),
+        valueType: 'number'
       }, 'number(<string-literal>)'],
       
       [ 'number($command.out)', {
         name: 'number',
-        input: atom('variable', 'command.out')
+        input: atom('variable', 'command.out'),
+        valueType: 'number'
       }, 'number(<variable>)'],
       
       [ 'number(12)', {
         name: 'number',
-        input: atom('literal:number', 12)
+        input: atom('literal:number', 12),
+        valueType: 'number'
       }, 'number(<number-literal>)'],
       
       // Test all valid token combinations of "lines" inputs
       [ 'lines("abc")', {
         name: 'lines',
-        input: atom('literal:string', 'abc')
+        input: atom('literal:string', 'abc'),
+        valueType: 'array'
       }, 'lines(<string-literal>)'],
       
       [ 'lines($command.out)', {
         name: 'lines',
-        input: atom('variable', 'command.out')
+        input: atom('variable', 'command.out'),
+        valueType: 'array'
       }, 'lines(<variable>)'],
       
       // Test all valid token combinations of "glob" inputs
       [ 'glob("abc")', {
         name: 'glob',
-        input: atom('literal:string', 'abc')
+        input: atom('literal:string', 'abc'),
+        valueType: 'array'
       }, 'glob(<string-literal>)'],
       
       [ 'glob($command.out)', {
         name: 'glob',
-        input: atom('variable', 'command.out')
+        input: atom('variable', 'command.out'),
+        valueType: 'array'
       }, 'glob(<variable>)'],
       
       // Test all valid token combinations of "load" inputs
       [ 'load("abc")', {
         name: 'load',
-        input: atom('literal:string', 'abc')
+        input: atom('literal:string', 'abc'),
+        valueType: 'null'
       }, 'load(<string-literal>)'],
       
       [ 'load($command.out)', {
         name: 'load',
-        input: atom('variable', 'command.out')
+        input: atom('variable', 'command.out'),
+        valueType: 'null'
       }, 'load(<variable>)'],
       
       // Test whitespace in between operation tokens
       [ 'number  (\t"abc"\t )', {
         name: 'number',
-        input: atom('literal:string', 'abc')
+        input: atom('literal:string', 'abc'),
+        valueType: 'number'
       }, 'whitespaces after operation-name, after opening paranthesis, before closing paranthesis']
     ]);
   });
@@ -479,7 +489,8 @@ describe('Parser', function () {
           list: {
             type: 'operation',
             name: 'lines',
-            input: atom('variable', 'command.out')
+            input: atom('variable', 'command.out'),
+            valueType: 'array'
           },
           valueProperty: atom('variable', 'filename'),
           indexProperty: {
@@ -496,7 +507,8 @@ describe('Parser', function () {
           list: {
             type: 'operation',
             name: 'glob',
-            input: atom('literal:string', '/*')
+            input: atom('literal:string', '/*'),
+            valueType: 'array'
           },
           valueProperty: atom('variable', 'filename'),
           indexProperty: {
@@ -518,7 +530,8 @@ describe('Parser', function () {
           list: {
             type: 'operation',
             name: 'glob',
-            input: atom('literal:string', '/*')
+            input: atom('literal:string', '/*'),
+            valueType: 'array'
           },
           valueProperty: atom('variable', 'filename'),
           indexProperty: {
@@ -544,7 +557,8 @@ describe('Parser', function () {
           list: {
             type: 'operation',
             name: 'glob',
-            input: atom('literal:string', '/*')
+            input: atom('literal:string', '/*'),
+            valueType: 'array'
           },
           valueProperty: atom('variable', 'filename'),
           indexProperty: {

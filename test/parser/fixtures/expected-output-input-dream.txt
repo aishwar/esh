@@ -6,7 +6,8 @@
       "valueType": "string"
     },
     "name": "load",
-    "type": "operation"
+    "type": "operation",
+    "valueType": "null"
   },
   {
     "body": [
@@ -205,7 +206,8 @@
             "valueType": "string"
           },
           "name": "lines",
-          "type": "operation"
+          "type": "operation",
+          "valueType": "array"
         },
         "type": "loop",
         "valueProperty": {
