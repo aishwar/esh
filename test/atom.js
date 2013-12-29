@@ -1,17 +1,23 @@
 
+function val(type, value) {
+  return {
+    type: type,
+    value: value
+  };
+}
 
-function atom(type, val) {
+function atom(type, value) {
+  var result = val(type, value);
+  
   switch (type) {
     case 'variable':
       return {
         type: type,
-        name: val
+        name: value,
+        valueType: (value === 'command.ok') ? 'number' : 'string'
       };
     default:
-      return {
-        type: type,
-        value: val
-      };
+      return result;
   }
 }
 

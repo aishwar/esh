@@ -23,7 +23,8 @@
     "condition": {
       "left": {
         "name": "action",
-        "type": "variable"
+        "type": "variable",
+        "valueType": "string"
       },
       "operator": {
         "type": "operator",

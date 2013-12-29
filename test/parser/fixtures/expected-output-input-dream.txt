@@ -40,7 +40,8 @@
         ],
         "condition": {
           "name": "arg.version",
-          "type": "variable"
+          "type": "variable",
+          "valueType": "string"
         },
         "type": "if"
       },
@@ -180,7 +181,8 @@
               "type": "not",
               "value": {
                 "name": "command.ok",
-                "type": "variable"
+                "type": "variable",
+                "valueType": "number"
               }
             },
             "type": "if"
@@ -188,12 +190,14 @@
         ],
         "indexProperty": {
           "name": "idx",
-          "type": "variable"
+          "type": "variable",
+          "valueType": "string"
         },
         "list": {
           "input": {
             "name": "command.out",
-            "type": "variable"
+            "type": "variable",
+            "valueType": "string"
           },
           "name": "lines",
           "type": "operation"
@@ -201,7 +205,8 @@
         "type": "loop",
         "valueProperty": {
           "name": "dir",
-          "type": "variable"
+          "type": "variable",
+          "valueType": "string"
         }
       }
     ],
