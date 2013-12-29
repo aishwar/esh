@@ -465,7 +465,11 @@ describe('Parser', function () {
         {
           list: atom('variable', 'deploy.servers'),
           valueProperty: atom('variable', 'server'),
-          indexProperty: atom('variable', 'idx'),
+          indexProperty: {
+            type: 'variable',
+            name: 'idx',
+            valueType: 'number'
+          },
           body: []
         },
         'Loop over variable; retrieve value and index in each iteration'],
@@ -478,7 +482,11 @@ describe('Parser', function () {
             input: atom('variable', 'command.out')
           },
           valueProperty: atom('variable', 'filename'),
-          indexProperty: atom('variable', 'idx'),
+          indexProperty: {
+            type: 'variable',
+            name: 'idx',
+            valueType: 'number'
+          },
           body: []
         },
         'Loop over results of the lines operation; retrieve value and index in each iteration'],
@@ -491,7 +499,11 @@ describe('Parser', function () {
             input: atom('literal:string', '/*')
           },
           valueProperty: atom('variable', 'filename'),
-          indexProperty: atom('variable', 'index'),
+          indexProperty: {
+            type: 'variable',
+            name: 'index',
+            valueType: 'number'
+          },
           body: []
         },
         'Loop over results of the glob operation; retrieve value and index in each iteration'],
@@ -509,7 +521,11 @@ describe('Parser', function () {
             input: atom('literal:string', '/*')
           },
           valueProperty: atom('variable', 'filename'),
-          indexProperty: atom('variable', 'idx'),
+          indexProperty: {
+            type: 'variable',
+            name: 'idx',
+            valueType: 'number'
+          },
           body: [
             atom('comment', ' Printing $filename'),
             atom('log:out', 'file: $filename'),
@@ -531,7 +547,11 @@ describe('Parser', function () {
             input: atom('literal:string', '/*')
           },
           valueProperty: atom('variable', 'filename'),
-          indexProperty: atom('variable', 'index'),
+          indexProperty: {
+            type: 'variable',
+            name: 'index',
+            valueType: 'number'
+          },
           body: [
             atom('comment', ' Printing $filename'),
             atom('log:out', 'file: $filename'),

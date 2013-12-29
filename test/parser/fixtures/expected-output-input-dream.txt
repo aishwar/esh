@@ -196,7 +196,7 @@
         "indexProperty": {
           "name": "idx",
           "type": "variable",
-          "valueType": "string"
+          "valueType": "number"
         },
         "list": {
           "input": {
