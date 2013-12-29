@@ -229,7 +229,24 @@ describe('Parser', function () {
           },
           body: []
         },
-        '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ]
+        '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ],
+        
+      [ 'if (number("123") < 1) {}',
+        {
+          condition: {
+            type: 'comparison',
+            operator: '<',
+            left: {
+              type: 'operation',
+              name: 'number',
+              input: atom('literal:string', '123'),
+              valueType: 'number'
+            },
+            right: atom('literal:number', 1)
+          },
+          body: []
+        },
+        '<operation> <operator> <number> : less than' ],
     ]);
   });
     
