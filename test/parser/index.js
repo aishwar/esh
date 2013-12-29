@@ -3,6 +3,7 @@ var assert = require('assert');
 var parser = require('../../lib/parser');
 var diffString = require('json-diff').diffString;
 var removePositionData = require('./remove-position-data');
+var atom = require('../atom');
 
 describe('Parser', function () {
 
@@ -11,25 +12,22 @@ describe('Parser', function () {
     //   [ input, output, test-description ]
     testCases.forEach(function (detail) {
         var input = detail[0],
+            value = detail[1],
             description = detail[2],
             run = detail[3] ? it.only : it,
             output,
             expected;
         
       run (description, function () {
-        var failureMessage = "";
+        var failureMessage = '';
         
-        // When a simple type is passed as the expected value, the node is expected to contain
-        // a property called "value" with the expected value
-        if (typeof detail[1] != "object") {
-          expected = {
-            type: nodeType,
-            value: detail[1]
-          }
+        // For simple types, make an atom from the node type and value
+        if (typeof value != 'object') {
+          expected = atom(nodeType, value);
         } else {
           // When an object is passed as the expected value, it is assumed this is the whole
           // object, except the "type" may not be filled as it repeats.
-          expected = detail[1];
+          expected = value;
           expected.type = nodeType;
         }
         
@@ -58,6 +56,10 @@ describe('Parser', function () {
       });
     });
   }
+  
+  //***************
+  // Begin tests! *
+  //***************
 
   describe ('should parse strings:', function () {
     test('literal:string', [
@@ -104,13 +106,6 @@ describe('Parser', function () {
       [ '$v.i', 'v.i', 'Name with dots (used when reading nested values)']
     ]);
   });
-  
-  function atom(type, val) {
-    return {
-      type: type,
-      value: val
-    }
-  }
   
   describe ('should parse if-statements:', function () {
     
