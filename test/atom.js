@@ -16,6 +16,8 @@ function atom(type, value) {
         name: value,
         valueType: (value === 'command.ok') ? 'number' : 'string'
       };
+    case 'literal:number':
+      result.valueType = 'number';
     default:
       return result;
   }
