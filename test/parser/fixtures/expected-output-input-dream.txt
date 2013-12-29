@@ -39,8 +39,8 @@
           }
         ],
         "condition": {
-          "type": "variable",
-          "value": "arg.version"
+          "name": "arg.version",
+          "type": "variable"
         },
         "type": "if"
       },
@@ -179,29 +179,29 @@
             "condition": {
               "type": "not",
               "value": {
-                "type": "variable",
-                "value": "command.ok"
+                "name": "command.ok",
+                "type": "variable"
               }
             },
             "type": "if"
           }
         ],
         "indexProperty": {
-          "type": "variable",
-          "value": "idx"
+          "name": "idx",
+          "type": "variable"
         },
         "list": {
           "input": {
-            "type": "variable",
-            "value": "command.out"
+            "name": "command.out",
+            "type": "variable"
           },
           "name": "lines",
           "type": "operation"
         },
         "type": "loop",
         "valueProperty": {
-          "type": "variable",
-          "value": "dir"
+          "name": "dir",
+          "type": "variable"
         }
       }
     ],

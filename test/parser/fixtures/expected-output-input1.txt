@@ -22,8 +22,8 @@
     ],
     "condition": {
       "left": {
-        "type": "variable",
-        "value": "action"
+        "name": "action",
+        "type": "variable"
       },
       "operator": {
         "type": "operator",

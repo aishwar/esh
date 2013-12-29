@@ -463,10 +463,7 @@ describe('Parser', function () {
       
       [ 'loop ($deploy.servers : $server, $idx) {}',
         {
-          list: {
-            type: 'variable',
-            value: 'deploy.servers'
-          },
+          list: atom('variable', 'deploy.servers'),
           valueProperty: atom('variable', 'server'),
           indexProperty: atom('variable', 'idx'),
           body: []
