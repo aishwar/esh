@@ -34,7 +34,7 @@ describe('Parser', function () {
         // "parse" outputs a list where item in the list represents an instruction. These tests
         // test only 1 instruction; so we wrap the expected object in a list; thus creating a 
         // list of 1 item
-        expected = [ expected ];
+        expected = atom('root', [ expected ]);
         
         try {
           output = parser.parse(input);

@@ -10,6 +10,12 @@ function atom(type, value) {
   var result = val(type, value);
   
   switch (type) {
+    case 'root':
+      result = {
+        type: type,
+        body: value
+      };
+      break;
     case 'variable':
       result = {
         type: type,

@@ -1,223 +1,226 @@
-[
-  {
-    "input": {
-      "type": "literal:string",
-      "value": "dream.vals",
-      "valueType": "string"
+{
+  "body": [
+    {
+      "input": {
+        "type": "literal:string",
+        "value": "dream.vals",
+        "valueType": "string"
+      },
+      "name": "load",
+      "type": "operation",
+      "valueType": "null"
     },
-    "name": "load",
-    "type": "operation",
-    "valueType": "null"
-  },
-  {
-    "body": [
-      {
-        "type": "literal:string",
-        "value": "-v, --version: Prints the version number of this script",
-        "valueType": "string"
-      },
-      {
-        "type": "literal:string",
-        "value": "-p, --properties <filename>: File that contains the property values for this script",
-        "valueType": "string"
-      },
-      {
-        "type": "literal:string",
-        "value": "This is a node.js deployment script. It pulls code from a remote repo and deploys it locally.",
-        "valueType": "string"
-      }
-    ],
-    "name": "Usage",
-    "type": "block"
-  },
-  {
-    "body": [
-      {
-        "body": [
-          {
-            "type": "log:out",
-            "value": "Version 0.1"
-          },
-          {
-            "name": "exit:ok",
-            "type": "special-word"
-          }
-        ],
-        "condition": {
-          "name": "arg.version",
-          "type": "variable",
+    {
+      "body": [
+        {
+          "type": "literal:string",
+          "value": "-v, --version: Prints the version number of this script",
           "valueType": "string"
         },
-        "type": "if"
-      },
-      {
-        "type": "log:out",
-        "value": "Creating and switching to the new deployment directory"
-      },
-      {
-        "type": "command",
-        "value": "mkdir -p $deployment.newdir"
-      },
-      {
-        "type": "command",
-        "value": "cd $deploy.newdir"
-      },
-      {
-        "type": "log:out",
-        "value": "Getting the lastest code from the repo"
-      },
-      {
-        "type": "command",
-        "value": "git clone $repo"
-      },
-      {
-        "type": "log:out",
-        "value": "Switching to the production branch"
-      },
-      {
-        "type": "command",
-        "value": "git checkout prod"
-      },
-      {
-        "type": "log:out",
-        "value": "Install node.js dependencies"
-      },
-      {
-        "type": "command",
-        "value": "npm install"
-      },
-      {
-        "type": "log:out",
-        "value": "Stopping the running server"
-      },
-      {
-        "type": "command",
-        "value": "forever stop $app.path"
-      },
-      {
-        "type": "log:out",
-        "value": "Link the application to the new deployment directory"
-      },
-      {
-        "type": "command",
-        "value": "ln -sfn $app.path $deployment.newdir"
-      },
-      {
-        "type": "log:out",
-        "value": "Starting the server running the new code"
-      },
-      {
-        "type": "command",
-        "value": "forever start $app.path"
-      },
-      {
-        "type": "log:out",
-        "value": "Add the new deployment directory to the deployment history"
-      },
-      {
-        "type": "command",
-        "value": "echo $deployment.newdir >> $deployment.history"
-      }
-    ],
-    "name": "Main",
-    "type": "block"
-  },
-  {
-    "body": [
-      {
-        "type": "log:out",
-        "value": "Reverting to old deployment due to error in deploying new code"
-      },
-      {
-        "type": "command",
-        "value": "ln -sfn $app.path $deployment.olddir"
-      },
-      {
-        "type": "log:out",
-        "value": "Starting the server"
-      },
-      {
-        "type": "command",
-        "value": "forever start $app.path"
-      },
-      {
-        "type": "log:out",
-        "value": "Remove the new directories created"
-      },
-      {
-        "type": "command",
-        "value": "rm -rf $deployment.newdir"
-      }
-    ],
-    "name": "OnError",
-    "type": "block"
-  },
-  {
-    "body": [
-      {
-        "type": "log:out",
-        "value": "Cleaning up older deployments"
-      },
-      {
-        "type": "comment",
-        "value": " Locate anything older than the last $deployment.keep_history deployments"
-      },
-      {
-        "type": "command",
-        "value": "head -n -$deployment.keep_history"
-      },
-      {
-        "body": [
-          {
-            "directives": [
-              "failable"
-            ],
-            "type": "command",
-            "value": "rm -rf $dir "
-          },
-          {
-            "body": [
-              {
-                "type": "log:err",
-                "value": "Could not remove $dir. Code: $command.code, Error: $command.err"
-              }
-            ],
-            "condition": {
-              "type": "not",
-              "value": {
-                "name": "command.ok",
-                "type": "variable",
-                "valueType": "number"
-              },
-              "valueType": "number"
-            },
-            "type": "if"
-          }
-        ],
-        "indexProperty": {
-          "name": "idx",
-          "type": "variable",
-          "valueType": "number"
+        {
+          "type": "literal:string",
+          "value": "-p, --properties <filename>: File that contains the property values for this script",
+          "valueType": "string"
         },
-        "list": {
-          "input": {
-            "name": "command.out",
+        {
+          "type": "literal:string",
+          "value": "This is a node.js deployment script. It pulls code from a remote repo and deploys it locally.",
+          "valueType": "string"
+        }
+      ],
+      "name": "Usage",
+      "type": "block"
+    },
+    {
+      "body": [
+        {
+          "body": [
+            {
+              "type": "log:out",
+              "value": "Version 0.1"
+            },
+            {
+              "name": "exit:ok",
+              "type": "special-word"
+            }
+          ],
+          "condition": {
+            "name": "arg.version",
             "type": "variable",
             "valueType": "string"
           },
-          "name": "lines",
-          "type": "operation",
-          "valueType": "array"
+          "type": "if"
         },
-        "type": "loop",
-        "valueProperty": {
-          "name": "dir",
-          "type": "variable",
-          "valueType": "string"
+        {
+          "type": "log:out",
+          "value": "Creating and switching to the new deployment directory"
+        },
+        {
+          "type": "command",
+          "value": "mkdir -p $deployment.newdir"
+        },
+        {
+          "type": "command",
+          "value": "cd $deploy.newdir"
+        },
+        {
+          "type": "log:out",
+          "value": "Getting the lastest code from the repo"
+        },
+        {
+          "type": "command",
+          "value": "git clone $repo"
+        },
+        {
+          "type": "log:out",
+          "value": "Switching to the production branch"
+        },
+        {
+          "type": "command",
+          "value": "git checkout prod"
+        },
+        {
+          "type": "log:out",
+          "value": "Install node.js dependencies"
+        },
+        {
+          "type": "command",
+          "value": "npm install"
+        },
+        {
+          "type": "log:out",
+          "value": "Stopping the running server"
+        },
+        {
+          "type": "command",
+          "value": "forever stop $app.path"
+        },
+        {
+          "type": "log:out",
+          "value": "Link the application to the new deployment directory"
+        },
+        {
+          "type": "command",
+          "value": "ln -sfn $app.path $deployment.newdir"
+        },
+        {
+          "type": "log:out",
+          "value": "Starting the server running the new code"
+        },
+        {
+          "type": "command",
+          "value": "forever start $app.path"
+        },
+        {
+          "type": "log:out",
+          "value": "Add the new deployment directory to the deployment history"
+        },
+        {
+          "type": "command",
+          "value": "echo $deployment.newdir >> $deployment.history"
         }
-      }
-    ],
-    "name": "CleanUp",
-    "type": "block"
-  }
-]
+      ],
+      "name": "Main",
+      "type": "block"
+    },
+    {
+      "body": [
+        {
+          "type": "log:out",
+          "value": "Reverting to old deployment due to error in deploying new code"
+        },
+        {
+          "type": "command",
+          "value": "ln -sfn $app.path $deployment.olddir"
+        },
+        {
+          "type": "log:out",
+          "value": "Starting the server"
+        },
+        {
+          "type": "command",
+          "value": "forever start $app.path"
+        },
+        {
+          "type": "log:out",
+          "value": "Remove the new directories created"
+        },
+        {
+          "type": "command",
+          "value": "rm -rf $deployment.newdir"
+        }
+      ],
+      "name": "OnError",
+      "type": "block"
+    },
+    {
+      "body": [
+        {
+          "type": "log:out",
+          "value": "Cleaning up older deployments"
+        },
+        {
+          "type": "comment",
+          "value": " Locate anything older than the last $deployment.keep_history deployments"
+        },
+        {
+          "type": "command",
+          "value": "head -n -$deployment.keep_history"
+        },
+        {
+          "body": [
+            {
+              "directives": [
+                "failable"
+              ],
+              "type": "command",
+              "value": "rm -rf $dir "
+            },
+            {
+              "body": [
+                {
+                  "type": "log:err",
+                  "value": "Could not remove $dir. Code: $command.code, Error: $command.err"
+                }
+              ],
+              "condition": {
+                "type": "not",
+                "value": {
+                  "name": "command.ok",
+                  "type": "variable",
+                  "valueType": "number"
+                },
+                "valueType": "number"
+              },
+              "type": "if"
+            }
+          ],
+          "indexProperty": {
+            "name": "idx",
+            "type": "variable",
+            "valueType": "number"
+          },
+          "list": {
+            "input": {
+              "name": "command.out",
+              "type": "variable",
+              "valueType": "string"
+            },
+            "name": "lines",
+            "type": "operation",
+            "valueType": "array"
+          },
+          "type": "loop",
+          "valueProperty": {
+            "name": "dir",
+            "type": "variable",
+            "valueType": "string"
+          }
+        }
+      ],
+      "name": "CleanUp",
+      "type": "block"
+    }
+  ],
+  "type": "root"
+}

@@ -1,58 +1,61 @@
-[
-  {
-    "type": "comment",
-    "value": " Bash Script example from: http://www.felixgers.de/teaching/shells/bash_script.html"
-  },
-  {
-    "type": "comment",
-    "value": " This is a comment"
-  },
-  {
-    "type": "command",
-    "value": "echo \"List of files:\""
-  },
-  {
-    "type": "command",
-    "value": "ls -lA"
-  },
-  {
-    "type": "command",
-    "value": "FILE_LIST=\"`ls *.html`\""
-  },
-  {
-    "type": "command",
-    "value": "echo FILE_LIST: ${FILE_LIST}"
-  },
-  {
-    "type": "command",
-    "value": "RESULT=\"\""
-  },
-  {
-    "type": "command",
-    "value": "for file in ${FILE_LIST}"
-  },
-  {
-    "type": "command",
-    "value": "do"
-  },
-  {
-    "type": "command",
-    "value": "FIRST_LINE=`head -2 ${file}`"
-  },
-  {
-    "type": "command",
-    "value": "RESULT=${RESULT}${FIRST_LINE}"
-  },
-  {
-    "type": "command",
-    "value": "done"
-  },
-  {
-    "type": "command",
-    "value": "echo ${RESULT} | cat >FILE_HEADS"
-  },
-  {
-    "type": "command",
-    "value": "echo \"'$RESULT' written Script done. \""
-  }
-]
+{
+  "body": [
+    {
+      "type": "comment",
+      "value": " Bash Script example from: http://www.felixgers.de/teaching/shells/bash_script.html"
+    },
+    {
+      "type": "comment",
+      "value": " This is a comment"
+    },
+    {
+      "type": "command",
+      "value": "echo \"List of files:\""
+    },
+    {
+      "type": "command",
+      "value": "ls -lA"
+    },
+    {
+      "type": "command",
+      "value": "FILE_LIST=\"`ls *.html`\""
+    },
+    {
+      "type": "command",
+      "value": "echo FILE_LIST: ${FILE_LIST}"
+    },
+    {
+      "type": "command",
+      "value": "RESULT=\"\""
+    },
+    {
+      "type": "command",
+      "value": "for file in ${FILE_LIST}"
+    },
+    {
+      "type": "command",
+      "value": "do"
+    },
+    {
+      "type": "command",
+      "value": "FIRST_LINE=`head -2 ${file}`"
+    },
+    {
+      "type": "command",
+      "value": "RESULT=${RESULT}${FIRST_LINE}"
+    },
+    {
+      "type": "command",
+      "value": "done"
+    },
+    {
+      "type": "command",
+      "value": "echo ${RESULT} | cat >FILE_HEADS"
+    },
+    {
+      "type": "command",
+      "value": "echo \"'$RESULT' written Script done. \""
+    }
+  ],
+  "type": "root"
+}

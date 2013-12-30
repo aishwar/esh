@@ -54,7 +54,7 @@ describe('Interpreter:', function () {
       function test(items) {
         items.forEach(function (item) {
           var comparison = 'if (' + item[0] + ') {}';
-          var ifNode = parser.parse(comparison)[0];
+          var ifNode = parser.parse(comparison).body[0];
           var expectation = (item[1]) ? assert.doesNotThrow : assert.throws;
           var run = (item[2]) ? it.only : it;
           
@@ -88,7 +88,7 @@ describe('Interpreter:', function () {
           '   "abc"',
           '   "def"',
           '}'
-        ].join('\n'))[0];
+        ].join('\n')).body[0];
         assert.doesNotThrow(function () { BlockNode.validate(node); });
       });
       
@@ -98,7 +98,7 @@ describe('Interpreter:', function () {
           '   mv abc',
           '   "def"',
           '}'
-        ].join('\n'))[0];
+        ].join('\n')).body[0];
         assert.throws(function () { BlockNode.validate(node); });
       });
     });

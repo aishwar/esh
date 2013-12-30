@@ -1,43 +1,46 @@
-[
-  {
-    "type": "comment",
-    "value": " Comment"
-  },
-  {
-    "type": "log:out",
-    "value": "Log1"
-  },
-  {
-    "alternate": [
-      {
-        "type": "log:err",
-        "value": "Stop"
-      }
-    ],
-    "body": [
-      {
-        "type": "log:out",
-        "value": "Go"
-      }
-    ],
-    "condition": {
-      "left": {
-        "name": "action",
-        "type": "variable",
-        "valueType": "string"
-      },
-      "operator": "==",
-      "right": {
-        "type": "literal:string",
-        "value": "go",
-        "valueType": "string"
-      },
-      "type": "comparison"
+{
+  "body": [
+    {
+      "type": "comment",
+      "value": " Comment"
     },
-    "type": "if"
-  },
-  {
-    "type": "log:out",
-    "value": "Done!"
-  }
-]
+    {
+      "type": "log:out",
+      "value": "Log1"
+    },
+    {
+      "alternate": [
+        {
+          "type": "log:err",
+          "value": "Stop"
+        }
+      ],
+      "body": [
+        {
+          "type": "log:out",
+          "value": "Go"
+        }
+      ],
+      "condition": {
+        "left": {
+          "name": "action",
+          "type": "variable",
+          "valueType": "string"
+        },
+        "operator": "==",
+        "right": {
+          "type": "literal:string",
+          "value": "go",
+          "valueType": "string"
+        },
+        "type": "comparison"
+      },
+      "type": "if"
+    },
+    {
+      "type": "log:out",
+      "value": "Done!"
+    }
+  ],
+  "type": "root"
+}
