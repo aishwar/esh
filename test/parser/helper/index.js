@@ -1,4 +1,6 @@
 
+var assert = require('assert');
+
 function type(obj) {
   return Object.prototype.toString.call(obj);
 }
@@ -37,6 +39,7 @@ function organize(obj) {
 function print(obj) {
   return JSON.stringify(organize(obj), null, 2);
 }
+
 
 
 exports.organize = organize;

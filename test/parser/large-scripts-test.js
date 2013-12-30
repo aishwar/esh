@@ -4,7 +4,7 @@ var assert = require('assert');
 var parser = require('../../lib/parser');
 var helper = require('./helper');
 var diffString = require('json-diff').diffString;
-var removePositionData = require('./remove-position-data');
+var removePositionData = require('./helper/remove-position-data');
 
 function test(description, inputFileName) {
   describe(description, function () {
