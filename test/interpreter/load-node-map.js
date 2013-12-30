@@ -1,25 +1,20 @@
 
-var assert = require('assert');
+var colors = require('colors');
+var chai = require('chai');
+var assert = chai.assert;
 var NodeMap = require('../../lib/interpreter/load-node-map');
 
 describe('Interpreter:', function () {
 
   describe('NodeMap:', function () {
-    it ('contains valid nodes', function () {
-      var NodeMap;
-      assert.doesNotThrow(function () {
-        // Make sure we can load all the nodes
-        NodeMap = require('../../lib/interpreter/load-node-map');
+    var NodeMap = require('../../lib/interpreter/load-node-map');
+    
+    Object.keys(NodeMap).forEach(function (key) {
+      it ('should contain a valid "' + key + '" node', function () {
+        var NodeConstructor = NodeMap[key];
+        assert.isFunction(NodeConstructor.prototype.validate);
+        assert.isFunction(NodeConstructor.prototype.eval);
       });
-      
-      // Make sure the loads are valid
-      for (var key in NodeMap) {
-        var node = NodeMap[key];
-        assert.ok(typeof node.validate =='function', 
-          ('"' + key + '#validate"').bold.yellow +  ' not found');
-        assert.ok(typeof node.eval =='function', 
-          ('"' + key + '#eval"').bold.yellow +  ' not found');
-      }
     });
   });
   

@@ -8,6 +8,7 @@ var parser = require('../../lib/parser');
 describe('Interpreter:', function () {
 
   describe('Nodes:', function () {
+  /*
     describe('comparison: ', function () {
       var ComparisonNode = NodeMap['comparison'];
       var PASS = true, FAIL = false;
@@ -39,10 +40,10 @@ describe('Interpreter:', function () {
       ]);
     });
     
-    
+    */
     describe('"Usage" block: ', function () {
       var BlockNode = NodeMap['block'];
-      
+      /*
       it ('should pass validation when everything is a string in it\'s body', function () {
         var node = parser.parse([
           'Usage {',
@@ -62,6 +63,7 @@ describe('Interpreter:', function () {
         ].join('\n')).body[0];
         assert.throws(function () { BlockNode.validate(node); });
       });
+      */
     });
     
   });
