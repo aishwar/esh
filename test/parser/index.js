@@ -1,3 +1,6 @@
+
+/* jshint quotmark:false */
+
 require('colors');
 var assert = require('assert');
 var parser = require('../../lib/parser');
@@ -11,12 +14,12 @@ describe('Parser', function () {
     // testCases is a list, where each item is of the format:
     //   [ input, output, test-description ]
     testCases.forEach(function (detail) {
-        var input = detail[0],
-            value = detail[1],
-            description = detail[2],
-            run = detail[3] ? it.only : it,
-            output,
-            expected;
+      var input = detail[0],
+          value = detail[1],
+          description = detail[2],
+          run = detail[3] ? it.only : it,
+          output,
+          expected;
         
       run (description, function () {
         var failureMessage = '';
@@ -41,14 +44,14 @@ describe('Parser', function () {
           removePositionData(output);
         } catch (e) {
           if (e instanceof parser.SyntaxError) {
-            e.message = 'Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' + 
-              e.message + '\n\tError at line ' + e.line + ', column ' + e.column
+            e.message = 'Parser: Syntax error in input:\n\tInput:' + input + '\n\tError:' +
+              e.message + '\n\tError at line ' + e.line + ', column ' + e.column;
           }
           throw e;
         }
         
         // Prepare the failure message in case it has to be printed
-        failureMessage = 'Here is the difference from the expected results:\n'.white + 
+        failureMessage = 'Here is the difference from the expected results:\n'.white +
           diffString(expected, output);
         
         // Do the deep equal, because I like to see the diff between the nodes
@@ -145,7 +148,7 @@ describe('Parser', function () {
           },
           body: []
         },
-        '<variable> <operator> <number> : greater than' ],
+        '<variable> <operator> <number> : greater than'],
       
       [ 'if ($a < 1) {}',
         {
@@ -171,7 +174,7 @@ describe('Parser', function () {
         },
         '<variable> <operator> <number> : greater than' ],
         
-      [ 'if ($a <= 1) {}', 
+      [ 'if ($a <= 1) {}',
         {
           condition: {
             type: 'comparison',
@@ -246,7 +249,7 @@ describe('Parser', function () {
           },
           body: []
         },
-        '<operation> <operator> <number> : less than' ],
+        '<operation> <operator> <number> : less than' ]
     ]);
   });
     
@@ -275,7 +278,7 @@ describe('Parser', function () {
       
       [ 'if ($a) {\n' +
         '  ## This is great\n' +
-        '  if ($b) {\n' + 
+        '  if ($b) {\n' +
         '    ## abc\n' +
         '  }\n' +
         '}', {
@@ -292,7 +295,7 @@ describe('Parser', function () {
         ]
       }, 'Nested if-statement in body'],
       
-       [ 'if ($a) {\n\tcat test\n}', {
+      [ 'if ($a) {\n\tcat test\n}', {
         condition: atom('variable', 'a'),
         body: [
           atom('command', 'cat test')
@@ -326,7 +329,7 @@ describe('Parser', function () {
       
       [ 'if ($a) {\n\t\n} else {\n' +
         '  ## This is great\n' +
-        '  if ($b) {\n' + 
+        '  if ($b) {\n' +
         '    ## abc\n' +
         '  }\n' +
         '}', {
@@ -410,7 +413,7 @@ describe('Parser', function () {
         },
         'Main block'
       ]
-    ])
+    ]);
   });
   
   describe ('should parse operations:', function () {
@@ -609,7 +612,7 @@ describe('Parser', function () {
         [ 'mkdir "abc\\"def"', 'mkdir "abc\\"def"', 'Escaped sequences in strings in command'],
         [ 'cd "my folder"', 'cd "my folder"', 'Double quoted string in command'],
         [ "cd 'my folder'", "cd 'my folder'", 'Single quoted string in command'],
-        [ "mv 'my folder' \"another folder\"", "mv 'my folder' \"another folder\"", 
+        [ "mv 'my folder' \"another folder\"", "mv 'my folder' \"another folder\"",
           'Multiple quoted strings in command']
       ]);
     });
@@ -618,8 +621,10 @@ describe('Parser', function () {
       test('command', [
         [ 'ls # directive', {value: 'ls ', directives: ['directive']}, '1 directive'],
         [ 'ls # dir1, dir2', {value: 'ls ', directives: ['dir1', 'dir2']}, 'multiple directives (2)'],
-        [ 'echo "# how nice is this" # orange', {value: 'echo "# how nice is this" ', directives: ['orange']}, 'hash within double quoted string is not interpreted as directive'],
-        [ 'echo \'# how nice is this\' # orange', {value: 'echo \'# how nice is this\' ', directives: ['orange']}, 'hash within single quoted string is not interpreted as directive']
+        [ 'echo "# how nice is this" # orange', {value: 'echo "# how nice is this" ', directives: ['orange']},
+          'hash within double quoted string is not interpreted as directive'],
+        [ 'echo \'# how nice is this\' # orange', {value: 'echo \'# how nice is this\' ', directives: ['orange']},
+          'hash within single quoted string is not interpreted as directive']
       ]);
     });
     

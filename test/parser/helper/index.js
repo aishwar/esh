@@ -1,6 +1,4 @@
 
-var assert = require('assert');
-
 function type(obj) {
   return Object.prototype.toString.call(obj);
 }
@@ -9,12 +7,8 @@ function isArray(obj) {
   return type(obj) == '[object Array]';
 }
 
-function isObject(obj) {
-  return type(obj) == '[object Object]';
-}
-
 function isPrimitive(obj) {
-  return !obj || typeof obj != "object";
+  return !obj || typeof obj != 'object';
 }
 
 function organize(obj) {

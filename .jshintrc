@@ -1,0 +1,16 @@
+{
+  "node":         true,
+  "strict":       false,
+  "smarttabs":    true,
+  "undef":        true,
+  "unused":       true,
+  "onecase":      true,
+  "newcap":       true,
+  "maxlen":       120,
+  "indent":       2,
+  "globals": {
+    "describe": true,
+    "it": true,
+    "before": true
+  }
+}

@@ -1,4 +1,6 @@
 
+/* jshint sub:true */
+
 var chai = require('chai');
 var assert = chai.assert;
 var parser = require('../../lib/parser');
@@ -13,17 +15,17 @@ describe('Interpreter:', function () {
     
     before(function () {
       rawRootNode = parser.parse(
-          [
-            'Main {',
-            '  if (number($command.out) > 1) {',
-            '    ## Command output was greater than 1',
-            '    echo "Good Job!"',
-            '  } else {',
-            '    #! Command output was less than or equal to 1',
-            '  }',
-            '}'
-          ].join('\n')
-        );
+        [
+          'Main {',
+          '  if (number($command.out) > 1) {',
+          '    ## Command output was greater than 1',
+          '    echo "Good Job!"',
+          '  } else {',
+          '    #! Command output was less than or equal to 1',
+          '  }',
+          '}'
+        ].join('\n')
+      );
       interpreter = new Interpreter(rawRootNode);
     });
     
@@ -48,7 +50,7 @@ describe('Interpreter:', function () {
       
       var conditionBlock = ifBlock.condition;
       assert.instanceOf(conditionBlock, NodeMap['comparison']);
-      assert.equal(conditionBlock.operator, '>')
+      assert.equal(conditionBlock.operator, '>');
       assert.property(conditionBlock, 'left');
       assert.property(conditionBlock, 'right');
       

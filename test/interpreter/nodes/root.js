@@ -1,7 +1,6 @@
 
-var fs = require('fs')
+var fs = require('fs');
 var chai = require('chai');
-var colors = require('colors');
 var parser = require('../../../lib/parser');
 var Interpreter = require('../../../lib/interpreter');
 var ValidationError = require('../../../lib/interpreter/errors/ValidationError');

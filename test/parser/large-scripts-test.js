@@ -18,8 +18,8 @@ function test(description, inputFileName) {
         removePositionData(output);
       } catch (e) {
         if (e instanceof parser.SyntaxError) {
-          e.message = (('\n\tSyntax error at line: ' + e.line + ', column: ' + e.column + '.\n\t' 
-            + e.message).yellow);
+          e.message = (('\n\tSyntax error at line: ' + e.line + ', column: ' + e.column + '.\n\t' +
+            e.message).yellow);
         }
         throw e;
       }
@@ -31,8 +31,8 @@ function test(description, inputFileName) {
       // Read in the expectations
       var expectedOutputFileName = __dirname + '/fixtures/expected-output-' + inputFileName + '.txt';
       if (!fs.existsSync(expectedOutputFileName)) {
-        console.log("[WARNING] Expected file doesn't exist, assuming this was an output generation run".yellow
-          + '\nNothing was tested here'.bold.yellow);
+        console.log('[WARNING] Expected file doesn\'t exist, assuming this was an output generation run'.yellow +
+          '\nNothing was tested here'.bold.yellow);
         return;
       }
       
@@ -46,7 +46,7 @@ function test(description, inputFileName) {
       }
       
       // Prepare the failure message and assert!
-      failureMessage = 'Here is the difference from expectation:\n'.white +
+      var failureMessage = 'Here is the difference from expectation:\n'.white +
         diffString(expected, output);
       assert.deepEqual(expected, output, failureMessage);
     });
