@@ -6,7 +6,7 @@ var assert = require('assert');
 var parser = require('../../lib/parser');
 var diffString = require('json-diff').diffString;
 var removePositionData = require('./helper/remove-position-data');
-var atom = require('../atom');
+var atom = require('./helper/atom');
 
 describe('Parser', function () {
 

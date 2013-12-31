@@ -6,7 +6,7 @@ var Interpreter = require('../../../lib/interpreter');
 var ValidationError = require('../../../lib/interpreter/errors/ValidationError');
 var assert = chai.assert;
 
-var fixturePrefix = __dirname + '/../fixtures/root-node-validation/';
+var fixturePrefix = __dirname + '/fixtures/root/';
 
 describe('Interpreter:', function () {
   describe('Root Node:', function () {
