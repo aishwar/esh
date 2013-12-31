@@ -33,6 +33,9 @@
     "chai": "~1.8.1"
   },
   "dependencies": {
-    "pegjs": "~0.8.0"
+    "pegjs": "~0.8.0",
+    "execSync": "~1.0.1-pre",
+    "glob": "~3.2.7",
+    "js-yaml": "~3.0.1"
   }
 }
