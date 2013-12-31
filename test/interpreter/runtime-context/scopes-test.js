@@ -48,7 +48,6 @@ describe('Runtime Context', function () {
     });
   });
 
-
   describe('loadValuesFromFile', function () {
     it('loads values from file into the globalScope', function () {
       var context = new RuntimeContext();
@@ -63,4 +62,57 @@ describe('Runtime Context', function () {
     });
   });
 
+  describe('retrieveValue', function () {
+    it('retrieves values from currentScope', function () {
+      var context = new RuntimeContext();
+
+      context.currentScope.level = '1';
+      context.currentScope.greetings = {
+        'en': {
+          'formal': 'hello',
+          'casual': 'yo',
+        },
+        'fr': {
+          'formal': 'bonjour'
+        }
+      };
+
+      assert.equal(context.retrieveValue('level'), '1');
+      assert.equal(context.retrieveValue('greetings.en.formal'), 'hello');
+      assert.equal(context.retrieveValue('greetings.en.casual'), 'yo');
+      assert.isUndefined(context.retrieveValue('unknown'));
+    });
+  });
+
+  describe('retrieveGlobalValue', function () {
+    it('retrieves values from globalScope', function () {
+      var context = new RuntimeContext();
+
+      context.currentScope.level = '1';
+      context.currentScope.greetings = {
+        'en': {
+          'formal': 'hello',
+          'casual': 'yo',
+        },
+        'fr': {
+          'formal': 'bonjour'
+        }
+      };
+
+      context.newScope();
+      context.currentScope.level = '2';
+      context.currentScope.greetings = 'none';
+
+      // Show distinction between retrieveValue and retrieveGlobalValue
+      assert.equal(context.retrieveValue('level'), '2');
+      assert.equal(context.retrieveGlobalValue('level'), '1');
+
+      // Show distinction between retrieveValue and retrieveGlobalValue
+      assert.isUndefined(context.retrieveValue('greetings.en.formal'));
+      assert.equal(context.retrieveGlobalValue('greetings.en.formal'), 'hello');
+
+      // Unknown values retrieved at globalScope return undefined
+      assert.isUndefined(context.retrieveGlobalValue('unknown'));
+    });
+  });
 });
