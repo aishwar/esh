@@ -29,12 +29,8 @@ function organize(obj) {
   return result;
 }
 
-
 function print(obj) {
   return JSON.stringify(organize(obj), null, 2);
 }
 
-
-
-exports.organize = organize;
-exports.print = print;
+module.exports = print;

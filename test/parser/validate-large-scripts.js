@@ -2,7 +2,7 @@ require('colors');
 var fs = require('fs');
 var assert = require('assert');
 var parser = require('../../lib/parser');
-var helper = require('./helper');
+var keyOrderedJsonStringify = require('./helper/key-ordered-json-stringify');
 var diffString = require('json-diff').diffString;
 var removePositionData = require('./helper/remove-position-data');
 
@@ -26,7 +26,7 @@ function test(description, inputFileName) {
       
       // Write out the results of the last run
       var generatedOutputFileName = __dirname + '/fixtures/generated-output-' + inputFileName + '.txt';
-      fs.writeFileSync(generatedOutputFileName, helper.print(output), 'utf8');
+      fs.writeFileSync(generatedOutputFileName, keyOrderedJsonStringify(output), 'utf8');
       
       // Read in the expectations
       var expectedOutputFileName = __dirname + '/fixtures/expected-output-' + inputFileName + '.txt';
