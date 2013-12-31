@@ -9,50 +9,74 @@
       "value": " This is a comment"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "echo \"List of files:\""
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "ls -lA"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "FILE_LIST=\"`ls *.html`\""
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "echo FILE_LIST: ${FILE_LIST}"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "RESULT=\"\""
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "for file in ${FILE_LIST}"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "do"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "FIRST_LINE=`head -2 ${file}`"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "RESULT=${RESULT}${FIRST_LINE}"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "done"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "echo ${RESULT} | cat >FILE_HEADS"
     },
     {
+      "directives": [],
+      "errorMessage": "",
       "type": "command",
       "value": "echo \"'$RESULT' written Script done. \""
     }

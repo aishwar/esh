@@ -10,6 +10,10 @@ function atom(type, value) {
   var result = val(type, value);
   
   switch (type) {
+    case 'command':
+      result.directives = [];
+      result.errorMessage = '';
+      break;
     case 'root':
       result = {
         type: type,

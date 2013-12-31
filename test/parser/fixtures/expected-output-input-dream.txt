@@ -34,6 +34,7 @@
     {
       "body": [
         {
+          "alternate": [],
           "body": [
             {
               "type": "log:out",
@@ -56,10 +57,14 @@
           "value": "Creating and switching to the new deployment directory"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "mkdir -p $deployment.newdir"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "cd $deploy.newdir"
         },
@@ -68,6 +73,8 @@
           "value": "Getting the lastest code from the repo"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "git clone $repo"
         },
@@ -76,6 +83,8 @@
           "value": "Switching to the production branch"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "git checkout prod"
         },
@@ -84,6 +93,8 @@
           "value": "Install node.js dependencies"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "npm install"
         },
@@ -92,6 +103,8 @@
           "value": "Stopping the running server"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "forever stop $app.path"
         },
@@ -100,6 +113,8 @@
           "value": "Link the application to the new deployment directory"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "ln -sfn $app.path $deployment.newdir"
         },
@@ -108,6 +123,8 @@
           "value": "Starting the server running the new code"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "forever start $app.path"
         },
@@ -116,6 +133,8 @@
           "value": "Add the new deployment directory to the deployment history"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "echo $deployment.newdir >> $deployment.history"
         }
@@ -130,6 +149,8 @@
           "value": "Reverting to old deployment due to error in deploying new code"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "ln -sfn $app.path $deployment.olddir"
         },
@@ -138,6 +159,8 @@
           "value": "Starting the server"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "forever start $app.path"
         },
@@ -146,6 +169,8 @@
           "value": "Remove the new directories created"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "rm -rf $deployment.newdir"
         }
@@ -164,6 +189,8 @@
           "value": " Locate anything older than the last $deployment.keep_history deployments"
         },
         {
+          "directives": [],
+          "errorMessage": "",
           "type": "command",
           "value": "head -n -$deployment.keep_history"
         },
@@ -173,10 +200,12 @@
               "directives": [
                 "failable"
               ],
+              "errorMessage": "",
               "type": "command",
               "value": "rm -rf $dir "
             },
             {
+              "alternate": [],
               "body": [
                 {
                   "type": "log:err",

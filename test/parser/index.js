@@ -113,14 +113,14 @@ describe('Parser', function () {
   describe ('should parse if-statements:', function () {
     
     test('if', [
-      [ 'if ($a) {} ', {condition: atom('variable', 'a'), body: []}, 'Variable used as a condition'],
-      [ 'if (!$a) {} ', {condition: atom('not', atom('variable', 'a')), body: []},
+      [ 'if ($a) {} ', {condition: atom('variable', 'a'), body: [], alternate: []}, 'Variable used as a condition'],
+      [ 'if (!$a) {} ', {condition: atom('not', atom('variable', 'a')), body: [], alternate: []},
         'Negated variable used as a condition' ],
       
-      [ '\n\nif\n(\n$a\n)\n{\n}\n', {condition: atom('variable', 'a'), body: []},
+      [ '\n\nif\n(\n$a\n)\n{\n}\n', {condition: atom('variable', 'a'), body: [], alternate: []},
         'line starting with a closing brace IS NOT A command' ],
       
-      [ ' if  ( $a ) \n { \n\t }\n', {condition: atom('variable', 'a'), body: []},
+      [ ' if  ( $a ) \n { \n\t }\n', {condition: atom('variable', 'a'), body: [], alternate: []},
         'whitespace before/after if; before/after condition; multiple whitespaces' ],
       [ ' if ( $a  >=  5 ) {}', {
         condition: {
@@ -130,6 +130,7 @@ describe('Parser', function () {
           operator: '>='
         },
         body: [],
+        alternate: []
       }, 'Comparison used as a condition' ],
     ]);
     
@@ -146,7 +147,8 @@ describe('Parser', function () {
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<variable> <operator> <number> : greater than'],
       
@@ -158,7 +160,8 @@ describe('Parser', function () {
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<variable> <operator> <number> : greater than' ],
       
@@ -170,7 +173,8 @@ describe('Parser', function () {
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<variable> <operator> <number> : greater than' ],
         
@@ -182,7 +186,8 @@ describe('Parser', function () {
             left: atom('variable', 'a'),
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<variable> <operator> <number> : not equal to' ],
       
@@ -194,7 +199,8 @@ describe('Parser', function () {
             left: atom('literal:number', 1),
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<number> <whitespace> <operator> <whitespace> <number> : equal to' ],
         
@@ -206,7 +212,8 @@ describe('Parser', function () {
             left: atom('variable', 'command.err'),
             right: atom('literal:string', "")
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<nested.variable> <operator> <string> : not equal to' ],
         
@@ -218,7 +225,8 @@ describe('Parser', function () {
             left: atom('literal:string', 'done'),
             right: atom('variable', 'command.out')
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '[start-of-line-whitespace] <string> <operator> <nested.variable> : equal to' ],
         
@@ -230,7 +238,8 @@ describe('Parser', function () {
             left: atom('literal:string', 'done'),
             right: atom('variable', 'command.out')
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<string> <operator> <nested.variable> [end-of-line-whitespace] : equal to' ],
         
@@ -247,7 +256,8 @@ describe('Parser', function () {
             },
             right: atom('literal:number', 1)
           },
-          body: []
+          body: [],
+          alternate: []
         },
         '<operation> <operator> <number> : less than' ]
     ]);
@@ -260,7 +270,8 @@ describe('Parser', function () {
         condition: atom('variable', 'a'),
         body: [
           atom('log:out', 'This is great')
-        ]
+        ],
+        alternate: []
       }, 'Log statement in body'],
       
       
@@ -272,7 +283,8 @@ describe('Parser', function () {
         body: [
           atom('log:out', 'This is great'),
           atom('log:err', 'This is an error')
-        ]
+        ],
+        alternate: []
       }, 'Multiple statements in body (out and err)'],
       
       
@@ -290,16 +302,19 @@ describe('Parser', function () {
             condition: atom('variable', 'b'),
             body: [
               atom('log:out', 'abc')
-            ]
+            ],
+            alternate: []
           }
-        ]
+        ],
+        alternate: []
       }, 'Nested if-statement in body'],
       
       [ 'if ($a) {\n\tcat test\n}', {
         condition: atom('variable', 'a'),
         body: [
           atom('command', 'cat test')
-        ]
+        ],
+        alternate: []
       }, 'command in body'],
     ]);
   });
@@ -341,7 +356,8 @@ describe('Parser', function () {
             condition: atom('variable', 'b'),
             body: [
               atom('log:out', 'abc')
-            ]
+            ],
+            alternate: []
           }
         ],
         body: []
@@ -385,7 +401,8 @@ describe('Parser', function () {
             {
               type: 'if',
               condition: atom('variable', 'a'),
-              body: []
+              body: [],
+              alternate: []
             }
           ]
         },
@@ -619,18 +636,21 @@ describe('Parser', function () {
     
     describe ('with directives', function () {
       test('command', [
-        [ 'ls # directive', {value: 'ls ', directives: ['directive']}, '1 directive'],
-        [ 'ls # dir1, dir2', {value: 'ls ', directives: ['dir1', 'dir2']}, 'multiple directives (2)'],
-        [ 'echo "# how nice is this" # orange', {value: 'echo "# how nice is this" ', directives: ['orange']},
+        [ 'ls # directive', {value: 'ls ', directives: ['directive'], errorMessage: ''}, '1 directive'],
+        [ 'ls # dir1, dir2', {value: 'ls ', directives: ['dir1', 'dir2'], errorMessage: ''},
+          'multiple directives (2)'],
+        [ 'echo "# how nice is this" # orange',
+          {value: 'echo "# how nice is this" ', directives: ['orange'], errorMessage: ''},
           'hash within double quoted string is not interpreted as directive'],
-        [ 'echo \'# how nice is this\' # orange', {value: 'echo \'# how nice is this\' ', directives: ['orange']},
+        [ 'echo \'# how nice is this\' # orange',
+          {value: 'echo \'# how nice is this\' ', directives: ['orange'], errorMessage: ''},
           'hash within single quoted string is not interpreted as directive']
       ]);
     });
     
     describe ('with custom onError message', function () {
       test('command', [
-        [ 'ls #! error', {value: 'ls ', errorMessage: 'error'}, 'error message']
+        [ 'ls #! error', {value: 'ls ', errorMessage: 'error', directives: []}, 'error message']
       ]);
     });
     
