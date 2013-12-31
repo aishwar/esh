@@ -5,7 +5,7 @@ var chai = require('chai');
 var assert = chai.assert;
 var parser = require('../../lib/parser');
 var Interpreter = require('../../lib/interpreter');
-var NodeMap = require('../../lib/interpreter/load-node-map');
+var NodeMap = require('../../lib/interpreter/node-map');
 var node = require('./helpers/node');
 
 describe('Interpreter:', function () {

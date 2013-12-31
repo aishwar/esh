@@ -5,7 +5,7 @@ var assert = chai.assert;
 describe('Interpreter:', function () {
 
   describe('NodeMap:', function () {
-    var NodeMap = require('../../lib/interpreter/load-node-map');
+    var NodeMap = require('../../lib/interpreter/node-map');
     
     Object.keys(NodeMap).forEach(function (key) {
       it ('should contain a valid "' + key + '" node', function () {
