@@ -1,20 +1,9 @@
 
 var assert = require('assert');
-var colors = require('colors');
-var atom = require('../atom');
-var parser = require('../../lib/parser');
-var Interpreter = require('../../lib/interpreter');
+var node = require('./helpers/node');
 
 describe('Interpreter:', function () {
-
   describe('Nodes:', function () {
-  
-    function node(str) {
-      var rawRootNode = parser.parse(str);
-      var interpreter = new Interpreter(rawRootNode);
-      var outputNode = interpreter.rootNode.body[0];
-      return outputNode;
-    }
 
     describe('if: ', function () {
       var PASS = true, FAIL = false;
@@ -45,7 +34,6 @@ describe('Interpreter:', function () {
         [ 'lines($command.out) >= 5'  , FAIL ]
       ]);
     });
-    
     
     describe('"Usage" block: ', function () {
       it ('should pass validation when everything is a string in it\'s body', function () {

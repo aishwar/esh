@@ -6,6 +6,7 @@ var assert = chai.assert;
 var parser = require('../../lib/parser');
 var Interpreter = require('../../lib/interpreter');
 var NodeMap = require('../../lib/interpreter/load-node-map');
+var node = require('./helpers/node');
 
 describe('Interpreter:', function () {
 
@@ -72,13 +73,6 @@ describe('Interpreter:', function () {
       assert.lengthOf(ifBlock.alternate, 1);
     });
   });
-
-  function node(str) {
-    var rawRootNode = parser.parse(str);
-    var interpreter = new Interpreter(rawRootNode);
-    var outputNode = interpreter.rootNode.body[0];
-    return outputNode;
-  }
 
   function ensureNoChildren(desc, str, exclusive) {
     ensureChildren(desc + ' contain no children', str, [], exclusive);
