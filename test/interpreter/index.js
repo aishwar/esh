@@ -48,7 +48,6 @@ describe('Interpreter:', function () {
     
     
     describe('"Usage" block: ', function () {
-      /*
       it ('should pass validation when everything is a string in it\'s body', function () {
         var targetNode = node([
           'Usage {',
@@ -68,7 +67,6 @@ describe('Interpreter:', function () {
         ].join('\n'));
         assert.throws(function () { targetNode.validate(); });
       });
-*/
     });
     
   });
