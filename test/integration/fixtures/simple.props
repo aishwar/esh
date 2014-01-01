@@ -1,0 +1,7 @@
+entity:
+  type: language
+  name: esh
+bornAt: Jan 1, 2014
+bornAtDeterminedBy: push to github where the interpreter is capable of running scripts
+author: Aishwar Muthuraman
+version: 1

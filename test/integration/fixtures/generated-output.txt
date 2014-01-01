@@ -1,0 +1,21 @@
+Checking log statement works
+ * ok
+Checking command works
+2014-01-01 
+ * ok
+Checking variable interpolation log statement works: esh
+ * Please verify 'esh' was printed at the end of the last line
+Checking 'if statement', 'number operation' and 'comparison' works
+ * ok
+Checking else-block works
+ * ok
+Checking loop works and variable interpolation in commands
+'0) ./fixtures' 
+'1) ./test-simple-input.js' 
+Please verify something like this was printed: '0) ./fixtures', '1) test-simple-input.js'
+Checking if illegal command terminates program (OnError and CleanUp blocks should be visited!)
+'illegal-command' is not recognized as an internal or external command,
+operable program or batch file.
+ * Please verify if one of the previous lines starts with 'Checking if illegal '
+This is the CleanUp block. That's all folks! Hope you liked what you saw :)
+ * Please verify the 2nd last line starts with ' * Please verify '

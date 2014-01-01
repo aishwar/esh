@@ -1,19 +1,48 @@
 #!/bin/esh
 
+load('fixtures/simple.props')
+
 Main {
-  ## This is today's date
+  ## Checking log statement works
+  ##  * ok
+
+  ## Checking command works
   date /t
+  ##  * ok
 
-  ## Will try to navigate to a non-existent folder
-  cd .
+  ## Checking variable interpolation log statement works: $entity.name
+  ##  * Please verify 'esh' was printed at the end of the last line
 
-  ## Seems like navigating to an existent folder worked :)
+  ## Checking 'if statement', 'number operation' and 'comparison' works
+  if (number($version) >= 1) {
+    ##  * ok
+  }
+
+  ## Checking else-block works
+  if (number($version) < 1) {
+    #! *** NOT OK!
+  } else {
+    ##  * ok
+  }
+
+  ## Checking loop works and variable interpolation in commands
+  loop(glob("./*") : $file, $index) {
+    echo '$index) $file'
+  }
+  ## Please verify something like this was printed: '0) ./fixtures', '1) test-simple-input.js'
+
+  ## Checking if illegal command terminates program (OnError and CleanUp blocks should be visited!)
+  illegal-command
+
+  ##  *** NOT OK!
 }
 
 OnError {
   #! Congratulations! Seems like an error occurred, which was expected in this case!
+  ##  * Please verify if one of the previous lines starts with 'Checking if illegal '
 }
 
 CleanUp {
-  ## Hope you liked it :)
+  ## This is the CleanUp block. That's all folks! Hope you liked what you saw :)
+  ##  * Please verify the 2nd last line starts with ' * Please verify '
 }

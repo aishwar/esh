@@ -1,0 +1,2 @@
+An error occurred:  Program terminated due to the command failing.
+Congratulations! Seems like an error occurred, which was expected in this case!
