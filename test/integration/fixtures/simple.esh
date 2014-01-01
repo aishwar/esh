@@ -1,0 +1,19 @@
+#!/bin/esh
+
+Main {
+  ## This is today's date
+  date /t
+
+  ## Will try to navigate to a non-existent folder
+  cd .
+
+  ## Seems like navigating to an existent folder worked :)
+}
+
+OnError {
+  #! Congratulations! Seems like an error occurred, which was expected in this case!
+}
+
+CleanUp {
+  ## Hope you liked it :)
+}
